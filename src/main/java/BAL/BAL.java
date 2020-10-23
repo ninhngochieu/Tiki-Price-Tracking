@@ -13,7 +13,7 @@ public class BAL {
     TikiBAL tikiBAL = new TikiBAL();
     CommentBAL commentBAL = new CommentBAL();
 
-    ArrayList<Object> list_type=null;
+    public ArrayList<Object> list_type=null;
     public ArrayList<Object> list_product=null;
     ArrayList<CommentDTO> list_comment=null;
 

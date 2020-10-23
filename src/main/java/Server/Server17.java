@@ -1,6 +1,7 @@
 package Server;
 
 import BAL.BAL;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,15 +12,18 @@ public class Server17 implements Runnable{
     private Socket socket;
     BufferedWriter out;
     BufferedReader in;
-    private ArrayList<Object> list;
+    private ArrayList<Object> listSP;
+    private ArrayList<Object> listCategory;
 
     BAL bal = new BAL();
     public Server17(Socket socket) {
         this.socket = socket;
-        this.list = bal.list_product;
+        this.listSP = bal.list_product;
+        this.listCategory = bal.list_type;
+
         try {
            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+           this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,10 +32,15 @@ public class Server17 implements Runnable{
     @Override
     public void run() {
         try{
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            List<String> list = (List<String>) objectInputStream.readObject();
-            System.out.println(list);
+
+            String data="";
+            ObjectMapper mapper = new ObjectMapper();
+            while (true){
+                data = this.in.readLine();
+                String json = mapper.writeValueAsString(this.listCategory);
+                System.out.println(json);
+                sendDataToClient(json);
+            }
         }catch (Exception e){
 
         }
@@ -40,7 +49,7 @@ public class Server17 implements Runnable{
 
     private void sendDataToClient(String data) {
         try {
-            out.write("");
+            out.write(data);
             out.newLine();
             out.flush();
         } catch (IOException e) {
