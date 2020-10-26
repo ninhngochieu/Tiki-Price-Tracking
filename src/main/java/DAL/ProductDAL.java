@@ -109,4 +109,50 @@ public class ProductDAL extends DB implements DAL {
         return null;
     }
 
+    public ArrayList<Object> getByName(String name) {
+        ArrayList<Object> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `product` WHERE `name` LIKE '%"+name+"%'";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                ProductDTO product = new ProductDTO(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("image"),
+                        rs.getString("id_item"),
+                        rs.getInt("price")
+                );
+                productDTOS.add(product);
+            }
+            System.out.println(productDTOS);
+            return productDTOS;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<Object> getByIdName(String id_item, String name) {
+        ArrayList<Object> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `product` WHERE `id_item` = '"+id_item+"' AND `name` LIKE '%"+name+"%'";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                ProductDTO product = new ProductDTO(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("image"),
+                        rs.getString("id_item"),
+                        rs.getInt("price")
+                );
+                productDTOS.add(product);
+            }
+            return productDTOS;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 }

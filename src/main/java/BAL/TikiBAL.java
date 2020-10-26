@@ -63,7 +63,7 @@ public class TikiBAL {
         int i=1;
         for (Object o:list_product) {
             ProductDTO p= (ProductDTO) o;
-            ArrayList<CommentDTO> commentOnPage = tikiDAL.getCommentsAllPage(p);
+            ArrayList<CommentDTO>  commentOnPage = tikiDAL.getCommentsAllPage(p);
             list.addAll(commentOnPage);
             System.out.println(i+". Da lay xong comment san pham "+p.getId()+". So comment: "+list.size());
             i++;
@@ -71,3 +71,4 @@ public class TikiBAL {
         return list;
     }
 }
+                                                                                                                                

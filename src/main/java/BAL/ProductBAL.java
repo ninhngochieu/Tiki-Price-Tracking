@@ -5,9 +5,10 @@ import DAL.ProductDAL;
 import DTO.ProductDTO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProductBAL {
-    DAL productDAL = new ProductDAL();
+    ProductDAL productDAL = new ProductDAL();
     public ArrayList<Object> getAllProduct() {
         return productDAL.getAll();
     }
@@ -25,6 +26,14 @@ public class ProductBAL {
             System.out.println("Them san pham: "+p);
         }else {
             System.out.println("Them that bai. Co loi xay ra");
+        }
+    }
+
+    public ArrayList<Object> getAllProductWithParam(HashMap<String, String> params) {
+        if(params.get("idCategory").equalsIgnoreCase("1")){
+            return productDAL.getByName(params.get("key"));
+        }else {
+            return productDAL.getByIdName(params.get("idCategory"),params.get("key"));
         }
     }
 }

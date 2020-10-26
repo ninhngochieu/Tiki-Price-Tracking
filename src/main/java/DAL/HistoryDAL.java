@@ -1,10 +1,9 @@
 package DAL;
 
+import DTO.HistoryDTO;
 import DTO.ProductDTO;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class HistoryDAL extends DB implements DAL{
@@ -42,6 +41,28 @@ public class HistoryDAL extends DB implements DAL{
 
     @Override
     public ArrayList<Object> getAll() {
+        return null;
+    }
+
+    public ArrayList<Object> getHistoryById(String id) {
+        ArrayList<Object> historyDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `history` WHERE `id_product` = '"+id+"'";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                HistoryDTO history = new HistoryDTO(
+                        rs.getString("id"),
+                        rs.getString("id_product"),
+                        rs.getTimestamp("last_update"),
+                        rs.getInt("current_price")
+                );
+                historyDTOS.add(history);
+            }
+            return historyDTOS;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return null;
     }
 }

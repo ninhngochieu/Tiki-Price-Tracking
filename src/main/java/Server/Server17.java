@@ -1,25 +1,31 @@
 package Server;
 
-import BAL.BAL;
+import BAL.*;
+import DAL.ProductDAL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Server17 implements Runnable{
     private Socket socket;
     BufferedWriter out;
     BufferedReader in;
     private ArrayList<Object> listSP;
-    private ArrayList<Object> listCategory;
+    private ArrayList<Object> listType;
+    private ArrayListInstance listInstance;
+    private ProductBAL productBAL;
+    private HistoryBAL historyBAL;
 
-    BAL bal = new BAL();
     public Server17(Socket socket) {
         this.socket = socket;
-        this.listSP = bal.list_product;
-        this.listCategory = bal.list_type;
+        listInstance = ArrayListInstance.getInstance();
+        this.productBAL = new ProductBAL();
+        this.historyBAL = new HistoryBAL();
+        this.listSP = listInstance.list_product;
+        this.listType = listInstance.list_type;
 
         try {
            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -35,16 +41,40 @@ public class Server17 implements Runnable{
 
             String data="";
             ObjectMapper mapper = new ObjectMapper();
-            while (true){
+            while (true){ //
                 data = this.in.readLine();
-                String json = mapper.writeValueAsString(this.listCategory);
-                System.out.println(json);
+                HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
+                ArrayList<Object> result = processingData(params);
+                String json = mapper.writeValueAsString(result);
+                System.out.println(params+json);
                 sendDataToClient(json);
             }
         }catch (Exception e){
 
         }
         closeConnection();
+    }
+
+    private ArrayList<Object> processingData(HashMap<String, String> params) {
+        switch (params.get("action")){
+            case "getAllCategory":
+                return this.listType;
+            case "search":
+                return productBAL.getAllProductWithParam(params);
+            case "detailProduct":
+                return historyBAL.getHistoryById(params);
+            default:break;
+        }
+        return new ArrayList<>();
+    }
+
+    private HashMap<String, String> processingParameter(String[] p) {
+        HashMap<String,String> params = new HashMap<>();
+        for (int i = 0; i < p.length; i++) {
+            String action[] = p[i].split("=");
+            params.put(action[0],action[1]);
+        }
+        return params;
     }
 
     private void sendDataToClient(String data) {
@@ -62,7 +92,7 @@ public class Server17 implements Runnable{
         System.out.println(socket.toString()+"is closing connection!");
         try {
             in.close();
-            //out.close();
+            out.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
