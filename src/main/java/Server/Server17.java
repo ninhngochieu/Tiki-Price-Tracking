@@ -4,11 +4,14 @@ import BAL.*;
 import DAL.ProductDAL;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jdk.jfr.Timespan;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Server17 implements Runnable{
@@ -94,6 +97,7 @@ public class Server17 implements Runnable{
             out.write(data);
             out.newLine();
             out.flush();
+            Date date = new Date();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,7 +105,7 @@ public class Server17 implements Runnable{
     }
 
     private void closeConnection() {
-        System.out.println(socket.toString()+"is closing connection!");
+        System.out.println(socket.toString()+"is closed!");
         try {
             in.close();
             out.close();
