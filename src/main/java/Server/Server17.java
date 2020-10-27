@@ -97,7 +97,6 @@ public class Server17 implements Runnable{
             out.write(data);
             out.newLine();
             out.flush();
-            Date date = new Date();
         } catch (IOException e) {
             e.printStackTrace();
         }
