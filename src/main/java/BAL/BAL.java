@@ -1,5 +1,6 @@
 package BAL;
 import DTO.CommentDTO;
+import DTO.HistoryDTO;
 import DTO.ProductDTO;
 import DTO.TypeDTO;
 
@@ -12,6 +13,7 @@ public class BAL {
     HistoryBAL historyBAL = new HistoryBAL();
     TikiBAL tikiBAL = new TikiBAL();
     CommentBAL commentBAL = new CommentBAL();
+    DetailBAL detailBAL = new DetailBAL();
 
     public ArrayList<Object> list_type=null;
     public ArrayList<Object> list_product=null;
@@ -73,5 +75,11 @@ public class BAL {
             System.out.println(i+" da them "+c+" vao DB");
             i++;
         }
+    }
+
+    public Object getDetailById(HashMap<String, String> params) {
+        ArrayList<Object> historyDTOS = historyBAL.getHistoryById(params.get("id"));
+        ArrayList<Object> commentDTOS = commentBAL.getCommentById(params.get("id"));
+        return detailBAL.getDetailProduct(params.get("id"),historyDTOS,commentDTOS);
     }
 }

@@ -12,7 +12,7 @@ public class HistoryBAL {
         return historyDAL.insert(x);
     }
 
-    public ArrayList<Object> getHistoryById(HashMap<String, String> params) {
-        return historyDAL.getHistoryById(params.get("id"));
+    public ArrayList<Object> getHistoryById(String id_product) {
+        return historyDAL.getHistoryById(id_product);
     }
 }

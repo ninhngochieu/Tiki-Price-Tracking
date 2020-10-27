@@ -1,6 +1,6 @@
 package DTO;
 
-public class CommentDTO extends Object{
+public class CommentDTO{
     private String id;
     private String title;
     private String content;
@@ -15,6 +15,10 @@ public class CommentDTO extends Object{
         this.thank_count = thank_count;
         this.rating = rating;
         this.id_product = id_product;
+    }
+
+    public CommentDTO() {
+
     }
 
     @Override

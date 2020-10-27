@@ -1,6 +1,7 @@
 package DTO;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ProductDTO implements Serializable{
     private String id;
@@ -8,6 +9,9 @@ public class ProductDTO implements Serializable{
     private String image;
     private String id_item;
     private int price;
+
+    public ProductDTO() {
+    }
 
     public ProductDTO(String id, String name, String image, String id_item, int price) {
         this.id = id;

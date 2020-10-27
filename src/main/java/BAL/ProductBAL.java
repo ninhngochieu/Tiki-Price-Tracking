@@ -36,4 +36,5 @@ public class ProductBAL {
             return productDAL.getByIdName(params.get("idCategory"),params.get("key"));
         }
     }
+
 }

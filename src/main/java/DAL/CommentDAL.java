@@ -1,9 +1,12 @@
 package DAL;
 
 import DTO.CommentDTO;
+import DTO.ProductDTO;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CommentDAL extends DB implements DAL{
@@ -47,4 +50,27 @@ public class CommentDAL extends DB implements DAL{
         return null;
     }
 
+    public ArrayList<Object> getCommentById(String id_product) {
+        ArrayList<Object> commentDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `comment` WHERE `id_product` = '"+id_product+"'";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                CommentDTO comment = new CommentDTO(
+                        rs.getString("id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getInt("thank_count"),
+                        rs.getFloat("rating"),
+                        rs.getString("id_product")
+                );
+                commentDTOS.add(comment);
+            }
+            return commentDTOS;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 }
