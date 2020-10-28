@@ -151,4 +151,23 @@ public class TikiDAL {
         return comments;
     }
 
+    public boolean setPriceAndReview(ProductDTO x) {
+        JSONObject obj = getJSONObjectFromURL("https://tiki.vn/api/v2/products/"+x.getId());
+        try {
+            int price = obj.getInt("price");
+            x.setPrice(price);
+        }catch (JSONException e){
+            e.printStackTrace();
+            System.out.println("Khong ton tai thuoc tinh nay!");
+        }
+        try {
+            int review_count = obj.getInt("review_count");
+            x.setReview_count(review_count);
+        }catch (JSONException e){
+            e.printStackTrace();
+            System.out.println("Khong ton tai thuoc tinh nay!");
+        }
+        return true;
+    }
+
 }

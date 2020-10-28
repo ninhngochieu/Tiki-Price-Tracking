@@ -70,5 +70,11 @@ public class TikiBAL {
         }
         return list;
     }
+    public void setPrice_Review(ProductDTO x) {
+        System.out.println("Price "+x.getPrice()+"/"+"Review count "+x.getReview_count());
+        tikiDAL.setPriceAndReview(x);
+        System.out.println("New price "+x.getPrice()+"/"+"New review count "+x.getReview_count());
+    }
+
 }
                                                                                                                                 

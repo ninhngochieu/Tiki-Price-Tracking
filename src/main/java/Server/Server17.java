@@ -78,6 +78,8 @@ public class Server17 implements Runnable{
                 return productBAL.getAllProductWithParam(params);
             case "detailProduct":
                 return BAL.getDetailById(params);
+            case "suggest_search":
+                return productBAL.getSuggestNameProduct(params);
             default:break;
         }
         return new Object();

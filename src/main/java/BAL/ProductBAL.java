@@ -3,17 +3,20 @@ package BAL;
 import DAL.DAL;
 import DAL.ProductDAL;
 import DTO.ProductDTO;
+import Server.ArrayListInstance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductBAL {
+    ArrayListInstance instance = ArrayListInstance.getInstance();
     ProductDAL productDAL = new ProductDAL();
+
     public ArrayList<Object> getAllProduct() {
         return productDAL.getAll();
     }
 
-    public boolean updatePrice(ProductDTO x) {
+    public boolean update(ProductDTO x) {
         return productDAL.update(x);
     }
 
@@ -37,4 +40,26 @@ public class ProductBAL {
         }
     }
 
+    public Object getSuggestNameProduct(HashMap<String, String> params) {
+        ArrayList<ProductDTO> list_product= instance.list_product;
+        ArrayList<String> name_products=new ArrayList<>();
+//        if(params.get("idCategory").equalsIgnoreCase("1")) {
+//            list_product.forEach(x->{
+//                if(x.getName().contains(params.get("key"))){
+//                    name_products.add(x.getName());
+//                }
+//            });
+//        }
+//
+        list_product.forEach(x->{
+            if(!params.get("idCategory").equalsIgnoreCase("1")&&x.getName().contains(params.get("key"))) {
+                name_products.add(x.getName());
+            }else {
+                if(x.getName().contains(params.get("key"))){
+                    name_products.add(x.getName());
+                }
+            }
+        });
+        return name_products;
+    }
 }

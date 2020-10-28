@@ -34,7 +34,8 @@ public class ProductDAL extends DB implements DAL {
             statement.setString(2,productTiki.getName());
             statement.setString(3,productTiki.getImage());
             statement.setInt(4,productTiki.getPrice());
-            statement.setString(5,productTiki.getId_item());
+            statement.setInt(5,productTiki.getReview_count());
+            statement.setString(6,productTiki.getId_item());
             return statement.executeUpdate()!=0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -50,14 +51,16 @@ public class ProductDAL extends DB implements DAL {
                     "`name`=?," +
                     "`image`=?," +
                     "`price`=?," +
-                    "`id_item`=? " +
-                    "WHERE `id` = ?";
+                    "`review_count`=?," +
+                    "`id_item`=?" +
+                    " WHERE `id`=?";
             PreparedStatement statement = this.connection.prepareStatement(sql);
             statement.setString(1,x.getName());
             statement.setString(2,x.getImage());
             statement.setInt(3,x.getPrice());
-            statement.setString(4,x.getId_item());
-            statement.setString(5,x.getId());
+            statement.setInt(4,x.getReview_count());
+            statement.setString(5,x.getId_item());
+            statement.setString(6,x.getId());
 //            statement.setInt(1,x.getPrice());
 //            statement.setString(2,x.getId());
             return statement.executeUpdate()>0;
@@ -98,7 +101,8 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price")
+                        rs.getInt("price"),
+                        rs.getInt("review_count")
                 );
                 productDTOS.add(product);
             }
@@ -121,7 +125,8 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price")
+                        rs.getInt("price"),
+                        rs.getInt("review_count")
                 );
                 productDTOS.add(product);
             }
@@ -145,7 +150,8 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price")
+                        rs.getInt("price"),
+                        rs.getInt("review_count")
                 );
                 productDTOS.add(product);
             }

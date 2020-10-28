@@ -27,18 +27,14 @@ public class BAL {
     public void insertHistory() {
         int i=1;
         for (Object x:list_product) {
-            int current_price = tikiBAL.getCurrentPrice((ProductDTO) x);
-            if(current_price==0){
-                System.out.println("****************San pham khong ton tai!*****************");
+            System.out.println("****************************************************");
+            tikiBAL.setPrice_Review((ProductDTO) x);
+            if(productBAL.update((ProductDTO) x)&&historyBAL.insertHistory((ProductDTO) x)){
+                System.out.println(i+". Them lich su "+x);
             }else {
-                ((ProductDTO) x).setPrice(current_price);
-                if(productBAL.updatePrice((ProductDTO) x)&&historyBAL.insertHistory((ProductDTO) x)){
-                    System.out.println(i+". Them lich su "+x);
-                }else {
-                    System.out.println("Thêm thất bại. Có lỗi xảy ra!");
-                }
-                i++;
+                System.out.println("Thêm thất bại. Có lỗi xảy ra!");
             }
+            i++;
         }
     }
 
