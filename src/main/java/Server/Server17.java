@@ -51,17 +51,10 @@ public class Server17 implements Runnable{
                 data = this.in.readLine();
                 HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
                 Object result = processingData(params);
-                String json = mapper.writeValueAsString(result);
-                //obj.put("data",json).put("key","123456").put("status",true);
 
-                HashMap<String,Object> map = new HashMap();
-                map.put("data",result);
-                map.put("key","123456");
-                map.put("status",true);
-                JSONObject obj = new JSONObject(map);
-
-                System.out.println(params+obj.toString());
-                sendDataToClient(obj.toString());
+                HashMap<String,Object> map = processingData(params);
+                System.out.println(params+map.toString());
+                sendDataToClient(map);
 
             }
         }catch (Exception e){
@@ -70,17 +63,36 @@ public class Server17 implements Runnable{
         closeConnection();
     }
 
-    private Object processingData(HashMap<String, String> params) {
+    private HashMap processingData(HashMap<String, String> params) {
+        HashMap<String,Object> map = new HashMap<>();
         switch (params.get("action")){
             case "getAllCategory":
-                return this.listType;
+                map.put("data",this.listType);
+                map.put("key","123456");
+                map.put("status",true);
+                return map;
             case "search":
-                return productBAL.getAllProductWithParam(params);
+                int total = productBAL.getTotal(params);
+                int per_page = 12;
+                int current_page = Integer.parseInt(params.get("page"));
+                int last_page = total/12 +1;
+
+                map.put("data",productBAL.getAllProductWithParam(params,per_page,current_page));
+                map.put("key","123456");
+                map.put("status",true);
+                map.put("total",total);
+                map.put("per_page",per_page);
+                map.put("current_page",current_page);
+                map.put("last_page",last_page);
+                return map;
             case "detailProduct":
-                return BAL.getDetailById(params);
+                map.put("data",BAL.getDetailById(params));
+                map.put("key","123456");
+                map.put("status",true);
+                return map;
             default:break;
         }
-        return new Object();
+        return map;
     }
 
     private HashMap<String, String> processingParameter(String[] p) {
@@ -92,9 +104,9 @@ public class Server17 implements Runnable{
         return params;
     }
 
-    private void sendDataToClient(String data) {
+    private void sendDataToClient(HashMap<String, Object> map) {
         try {
-            out.write(data);
+            out.write(new JSONObject(map).toString());
             out.newLine();
             out.flush();
         } catch (IOException e) {
