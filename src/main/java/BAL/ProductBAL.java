@@ -45,6 +45,9 @@ public class ProductBAL{
     }
 
     public Object suggestNameProduct(HashMap<String, String> params) {
+        ArrayList<ProductDTO> fillter_list = instance.list_product;
+        fillter_list.stream().filter(x->x.getId_item().equals(params.get("idCategory")));
+        System.out.println(fillter_list);
         return null;
     }
 

@@ -23,7 +23,6 @@ public class Server17 implements Runnable{
     private ArrayList<Object> listSP;
     private ArrayList<Object> listType;
     private ProductBAL productBAL;
-    private HistoryBAL historyBAL;
     private BAL BAL;
 
     private static ArrayListInstance listInstance=ArrayListInstance.getInstance();
@@ -31,7 +30,6 @@ public class Server17 implements Runnable{
     public Server17(Socket socket) {
         this.socket = socket;
         this.productBAL = new ProductBAL();
-        this.historyBAL = new HistoryBAL();
         this.BAL = new BAL();
         this.listSP = listInstance.list_product;
         this.listType = listInstance.list_type;
@@ -52,8 +50,6 @@ public class Server17 implements Runnable{
             while (true){ //
                 data = this.in.readLine();
                 HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
-                Object result = processingData(params);
-
                 HashMap<String,Object> map = processingData(params);
                 System.out.println(params+map.toString());
                 sendDataToClient(map);
@@ -66,12 +62,9 @@ public class Server17 implements Runnable{
     }
 
     private HashMap processingData(HashMap<String, String> params) {
-        HashMap<String,Object> map = null;
+        HashMap<String,Object> map = new HashMap<>();
         switch (params.get("action")){
             case "getAllCategory":
-//                map.put("data",this.listType);
-//                map.put("key","123456");
-//                map.put("status",true);
                 map = new SenderDTO(this.listType,"123456");
                 return map;
             case "search":
@@ -84,19 +77,8 @@ public class Server17 implements Runnable{
                         productBAL.getAllProductWithParam(params,per_page,current_page),
                         "123456", true, total, per_page, current_page, last_page
                 );
-//
-//                map.put("data",productBAL.getAllProductWithParam(params,per_page,current_page));
-//                map.put("key","123456");
-//                map.put("status",true);
-//                map.put("total",total);
-//                map.put("per_page",per_page);
-//                map.put("current_page",current_page);
-//                map.put("last_page",last_page);
                 return map;
             case "detailProduct":
-//                map.put("data",BAL.getDetailById(params));
-//                map.put("key","123456");
-//                map.put("status",true);
                 map = new SenderDTO(BAL.getDetailById(params),"123546");
                 return map;
             case "suggest_result":
@@ -109,9 +91,13 @@ public class Server17 implements Runnable{
 
     private HashMap<String, String> processingParameter(String[] p) {
         HashMap<String,String> params = new HashMap<>();
-        for (int i = 0; i < p.length; i++) {
-            String action[] = p[i].split("=");
-            params.put(action[0],action[1]);
+        for (int i = 0; i < p.length; i++) { ;
+            try{
+                String action[] = p[i].split("=");
+                params.put(action[0],action[1]);
+            }catch (Exception e){
+                params.put("key",null);
+            }
         }
         return params;
     }
