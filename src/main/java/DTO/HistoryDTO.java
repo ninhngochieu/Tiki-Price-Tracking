@@ -1,5 +1,9 @@
 package DTO;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class HistoryDTO {
@@ -39,7 +43,17 @@ public class HistoryDTO {
     }
 
     public void setLast_update(Date last_update) {
-        this.last_update = last_update;
+        Date date=new Date(last_update.getTime());
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        this.last_update = cal.getTime();
+
     }
 
     public int getCurrent_price() {

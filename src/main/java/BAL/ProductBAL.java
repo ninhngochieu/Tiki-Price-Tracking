@@ -7,6 +7,8 @@ import Server.ArrayListInstance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductBAL{
     private static ArrayListInstance instance = ArrayListInstance.getInstance();
@@ -45,10 +47,21 @@ public class ProductBAL{
     }
 
     public Object suggestNameProduct(HashMap<String, String> params) {
-        ArrayList<ProductDTO> fillter_list = instance.list_product;
-        fillter_list.stream().filter(x->x.getId_item().equals(params.get("idCategory")));
-        System.out.println(fillter_list);
-        return null;
+        String idCategory = params.get("idCategory");
+        String key = params.get("key");
+        ArrayList<ProductDTO> list_product = instance.list_product;
+        if(idCategory.equalsIgnoreCase("1")){
+            return new ArrayList<>(list_product
+                    .stream()
+                    .filter(x->x.getName().contains(key))
+                    .collect(Collectors.toList()));
+        }else {
+            return new ArrayList<>(list_product
+                    .stream()
+                    .filter(x->x.getId_item().equalsIgnoreCase(idCategory))
+                    .filter(x->x.getName().contains(key))
+                    .collect(Collectors.toList()));
+        }
     }
 
 //    public Object getSuggestNameProduct(HashMap<String, String> params) {
