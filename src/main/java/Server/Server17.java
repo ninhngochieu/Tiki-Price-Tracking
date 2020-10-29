@@ -51,17 +51,10 @@ public class Server17 implements Runnable{
                 data = this.in.readLine();
                 HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
                 Object result = processingData(params);
-                String json = mapper.writeValueAsString(result);
-                //obj.put("data",json).put("key","123456").put("status",true);
 
-                HashMap<String,Object> map = new HashMap();
-                map.put("data",result);
-                map.put("key","123456");
-                map.put("status",true);
-                JSONObject obj = new JSONObject(map);
-
-                System.out.println(params+obj.toString());
-                sendDataToClient(obj.toString());
+                HashMap<String,Object> map = processingData(params);
+                System.out.println(params+map.toString());
+                sendDataToClient(map);
 
             }
         }catch (Exception e){
