@@ -104,9 +104,9 @@ public class Server17 implements Runnable{
         return params;
     }
 
-    private void sendDataToClient(String data) {
+    private void sendDataToClient(HashMap<String, Object> map) {
         try {
-            out.write(data);
+            out.write(new JSONObject(map).toString());
             out.newLine();
             out.flush();
         } catch (IOException e) {
