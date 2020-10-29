@@ -16,18 +16,18 @@ import java.util.HashMap;
 
 public class Server17 implements Runnable{
     private Socket socket;
-    BufferedWriter out;
-    BufferedReader in;
+    private BufferedWriter out;
+    private BufferedReader in;
     private ArrayList<Object> listSP;
     private ArrayList<Object> listType;
-    private ArrayListInstance listInstance;
     private ProductBAL productBAL;
     private HistoryBAL historyBAL;
     private BAL BAL;
 
+    private static ArrayListInstance listInstance=ArrayListInstance.getInstance();
+
     public Server17(Socket socket) {
         this.socket = socket;
-        listInstance = ArrayListInstance.getInstance();
         this.productBAL = new ProductBAL();
         this.historyBAL = new HistoryBAL();
         this.BAL = new BAL();

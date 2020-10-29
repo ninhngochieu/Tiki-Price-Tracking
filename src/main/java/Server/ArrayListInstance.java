@@ -1,17 +1,19 @@
 package Server;
 
-import BAL.BAL;
+import BAL.ProductBAL;
+import BAL.TypeBAL;
 
 import java.util.ArrayList;
 
 public class ArrayListInstance {
-    protected static ArrayList list_type;
-    protected static ArrayList list_product;
-    private static ArrayListInstance listInstance;
+    public static ArrayList list_type;
+    public static ArrayList list_product;
+    private static ArrayListInstance listInstance=null;
     private ArrayListInstance(){
-        BAL bal = new BAL();
-        this.list_type = bal.list_type;
-        this.list_product = bal.list_product;
+        ProductBAL productBAL = new ProductBAL();
+        TypeBAL typeBAL = new TypeBAL();
+        list_type = typeBAL.getAllType();
+        list_product =productBAL.getAllProduct();
     }
     public static ArrayListInstance getInstance(){
         if (listInstance==null){

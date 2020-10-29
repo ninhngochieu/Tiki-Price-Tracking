@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProductBAL{
-    //ArrayListInstance instance = ArrayListInstance.getInstance();
-    ProductDAL productDAL = new ProductDAL();
+    private static ArrayListInstance instance = ArrayListInstance.getInstance();
+    private ProductDAL productDAL = new ProductDAL();
 
     public ArrayList<Object> getAllProduct() {
         return productDAL.getAll();

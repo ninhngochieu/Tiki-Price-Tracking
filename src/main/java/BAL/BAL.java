@@ -3,6 +3,7 @@ import DTO.CommentDTO;
 import DTO.HistoryDTO;
 import DTO.ProductDTO;
 import DTO.TypeDTO;
+import Server.ArrayListInstance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,14 +15,12 @@ public class BAL {
     TikiBAL tikiBAL = new TikiBAL();
     CommentBAL commentBAL = new CommentBAL();
     DetailBAL detailBAL = new DetailBAL();
-
-    public ArrayList<Object> list_type=null;
-    public ArrayList<Object> list_product=null;
-    ArrayList<CommentDTO> list_comment=null;
-
+    ArrayList<Object> list_type;
+    ArrayList<Object> list_product;
     public BAL() {
-        this.list_type = typeBAL.getAllType();
-        this.list_product = productBAL.getAllProduct();
+        ArrayListInstance listInstance = ArrayListInstance.getInstance();
+        this.list_type = listInstance.list_type;
+        this.list_product = listInstance.list_product;
     }
 
     public void insertHistory() {
