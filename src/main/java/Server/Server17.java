@@ -63,20 +63,36 @@ public class Server17 implements Runnable{
         closeConnection();
     }
 
-    private Object processingData(HashMap<String, String> params) {
+    private HashMap processingData(HashMap<String, String> params) {
+        HashMap<String,Object> map = new HashMap<>();
         switch (params.get("action")){
             case "getAllCategory":
-                return this.listType;
+                map.put("data",this.listType);
+                map.put("key","123456");
+                map.put("status",true);
+                return map;
             case "search":
-                return productBAL.getAllProductWithParam(params);
+                int total = productBAL.getTotal(params);
+                int per_page = 12;
+                int current_page = Integer.parseInt(params.get("page"));
+                int last_page = total/12 +1;
+
+                map.put("data",productBAL.getAllProductWithParam(params,per_page,current_page));
+                map.put("key","123456");
+                map.put("status",true);
+                map.put("total",total);
+                map.put("per_page",per_page);
+                map.put("current_page",current_page);
+                map.put("last_page",last_page);
+                return map;
             case "detailProduct":
-                return BAL.getDetailById(params);
-            case "suggest_search":
-//                return productBAL.getSuggestNameProduct(params);
-                break;
+                map.put("data",BAL.getDetailById(params));
+                map.put("key","123456");
+                map.put("status",true);
+                return map;
             default:break;
         }
-        return new Object();
+        return map;
     }
 
     private HashMap<String, String> processingParameter(String[] p) {
