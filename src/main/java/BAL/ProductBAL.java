@@ -32,13 +32,6 @@ public class ProductBAL{
         }
     }
 
-    public ArrayList<Object> getAllProductWithParam(HashMap<String, String> params) {
-        if(params.get("idCategory").equalsIgnoreCase("1")){
-            return productDAL.getByName(params.get("key"));
-        }else {
-            return productDAL.getByIdName(params.get("idCategory"),params.get("key"));
-        }
-    }
     public ArrayList<Object> getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page) {
         if(params.get("idCategory").equalsIgnoreCase("1")){
             return productDAL.getByName(params.get("key"),per_page,current_page);
@@ -49,6 +42,10 @@ public class ProductBAL{
 
     public int getTotal(HashMap<String, String> params) {
         return productDAL.getTotalByName(params.get("key")).size();
+    }
+
+    public Object suggestNameProduct(HashMap<String, String> params) {
+        return null;
     }
 
 //    public Object getSuggestNameProduct(HashMap<String, String> params) {

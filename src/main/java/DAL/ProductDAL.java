@@ -113,10 +113,10 @@ public class ProductDAL extends DB implements DAL {
         return null;
     }
 
-    public ArrayList<Object> getByName(String name) {
+    public ArrayList<Object> getByName(String name, int per_page, int current_page) {
         ArrayList<Object> productDTOS = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM `product` WHERE `name` LIKE '%"+name+"%'";
+            String sql = "SELECT * FROM `product` WHERE `name` LIKE '%"+name+"%' LIMIT "+per_page+" OFFSET "+(current_page-1)*per_page+"";
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()){
@@ -125,8 +125,7 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price"),
-                        rs.getInt("review_count")
+                        rs.getInt("price")
                 );
                 productDTOS.add(product);
             }
@@ -138,10 +137,10 @@ public class ProductDAL extends DB implements DAL {
         return null;
     }
 
-    public ArrayList<Object> getByIdName(String id_item, String name) {
+    public ArrayList<Object> getByIdName(String id_item, String name, int per_page, int current_page) {
         ArrayList<Object> productDTOS = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM `product` WHERE `id_item` = '"+id_item+"' AND `name` LIKE '%"+name+"%'";
+            String sql = "SELECT * FROM `product` WHERE `id_item` = '"+id_item+"' AND `name` LIKE '%"+name+"%' LIMIT "+per_page+" OFFSET "+(current_page-1)*per_page+"";
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()){
@@ -150,8 +149,7 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price"),
-                        rs.getInt("review_count")
+                        rs.getInt("price")
                 );
                 productDTOS.add(product);
             }
@@ -161,6 +159,7 @@ public class ProductDAL extends DB implements DAL {
         }
         return null;
     }
+
     public ArrayList<Object> getTotalByName(String name) {
         ArrayList<Object> productDTOS = new ArrayList<>();
         try {

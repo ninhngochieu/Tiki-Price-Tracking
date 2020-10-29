@@ -2,6 +2,8 @@ package Server;
 
 import BAL.*;
 import DAL.ProductDAL;
+import DTO.PagingSenderDTO;
+import DTO.SenderDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jdk.jfr.Timespan;
@@ -64,31 +66,41 @@ public class Server17 implements Runnable{
     }
 
     private HashMap processingData(HashMap<String, String> params) {
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String,Object> map = null;
         switch (params.get("action")){
             case "getAllCategory":
-                map.put("data",this.listType);
-                map.put("key","123456");
-                map.put("status",true);
+//                map.put("data",this.listType);
+//                map.put("key","123456");
+//                map.put("status",true);
+                map = new SenderDTO(this.listType,"123456");
                 return map;
             case "search":
                 int total = productBAL.getTotal(params);
-                int per_page = 12;
+                int per_page = 16;
                 int current_page = Integer.parseInt(params.get("page"));
-                int last_page = total/12 +1;
+                int last_page = total/per_page +1;
 
-                map.put("data",productBAL.getAllProductWithParam(params,per_page,current_page));
-                map.put("key","123456");
-                map.put("status",true);
-                map.put("total",total);
-                map.put("per_page",per_page);
-                map.put("current_page",current_page);
-                map.put("last_page",last_page);
+                map = new PagingSenderDTO(
+                        productBAL.getAllProductWithParam(params,per_page,current_page),
+                        "123456", true, total, per_page, current_page, last_page
+                );
+//
+//                map.put("data",productBAL.getAllProductWithParam(params,per_page,current_page));
+//                map.put("key","123456");
+//                map.put("status",true);
+//                map.put("total",total);
+//                map.put("per_page",per_page);
+//                map.put("current_page",current_page);
+//                map.put("last_page",last_page);
                 return map;
             case "detailProduct":
-                map.put("data",BAL.getDetailById(params));
-                map.put("key","123456");
-                map.put("status",true);
+//                map.put("data",BAL.getDetailById(params));
+//                map.put("key","123456");
+//                map.put("status",true);
+                map = new SenderDTO(BAL.getDetailById(params),"123546");
+                return map;
+            case "suggest_result":
+                map = new SenderDTO(productBAL.suggestNameProduct(params),"123456");
                 return map;
             default:break;
         }
