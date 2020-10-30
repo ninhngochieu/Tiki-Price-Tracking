@@ -65,7 +65,9 @@ public class CommentDAL extends DB implements DAL{
                         rs.getString("content"),
                         rs.getInt("thank_count"),
                         rs.getFloat("rating"),
-                        rs.getString("id_product")
+                        rs.getString("id_product"),
+                        rs.getString("full_name"),
+                        rs.getInt("purchased_at")
                 );
                 commentDTOS.add(comment);
             }
