@@ -16,7 +16,7 @@ public class main {
         //balService.insertNewType();
         //balService.insertNewProduct();
         //balService.insertHistory();
-        //balService.insertComment();
+        balService.insertComment();
 
 //        try {
 //            server = new ServerSocket(5002);

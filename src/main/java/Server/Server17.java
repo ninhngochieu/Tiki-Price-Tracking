@@ -1,19 +1,14 @@
 package Server;
 
-import BAL.*;
-import DAL.ProductDAL;
+import BAL.BAL;
+import BAL.ProductBAL;
 import DTO.PagingSenderDTO;
 import DTO.SenderDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import jdk.jfr.Timespan;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class Server17 implements Runnable{
@@ -46,7 +41,6 @@ public class Server17 implements Runnable{
     public void run() {
         try{
             String data="";
-            ObjectMapper mapper = new ObjectMapper();
             while (true){ //
                 data = this.in.readLine();
                 HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"

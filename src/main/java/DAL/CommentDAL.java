@@ -15,7 +15,7 @@ public class CommentDAL extends DB implements DAL{
     public boolean insert(Object o) {
         CommentDTO c = (CommentDTO) o;
         try {
-            String sql = "INSERT INTO `comment`(`id`, `title`, `content`, `thank_count`, `rating`, `id_product`) VALUES (?,?,?,?,?,?)";
+            String sql = "INSERT INTO `comment`(`id`, `title`, `content`, `thank_count`, `rating`, `id_product`, `full_name`, `purchased_at`) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement statement = this.connection.prepareStatement(sql);
             statement.setString(1,c.getId());
             statement.setString(2,c.getTitle());
@@ -23,6 +23,8 @@ public class CommentDAL extends DB implements DAL{
             statement.setInt(4,c.getThank_count());
             statement.setFloat(5,c.getRating());
             statement.setString(6,c.getId_product());
+            statement.setString(7,c.getFull_name());
+            statement.setInt(8,c.getPurchased_at());
             return statement.executeUpdate()!=0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

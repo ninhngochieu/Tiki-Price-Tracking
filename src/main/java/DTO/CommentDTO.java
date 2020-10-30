@@ -1,5 +1,7 @@
 package DTO;
 
+import jdk.jfr.Unsigned;
+
 public class CommentDTO{
     private String id;
     private String title;
@@ -7,6 +9,8 @@ public class CommentDTO{
     private int thank_count;
     private float rating;
     private String id_product;
+    private String full_name;
+    private int purchased_at;
 
     public CommentDTO(String id, String title, String content, int thank_count, float rating, String id_product) {
         this.id = id;
@@ -19,6 +23,34 @@ public class CommentDTO{
 
     public CommentDTO() {
 
+    }
+
+    public CommentDTO(String id, String title, String content, int thank_count, float rating, String id_product, String full_name, int purchased_at) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.thank_count = thank_count;
+        this.rating = rating;
+        this.id_product = id_product;
+        this.full_name = full_name;
+        this.purchased_at = purchased_at;
+    }
+
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public int getPurchased_at() {
+        return purchased_at;
+    }
+
+    public void setPurchased_at(int purchased_at) {
+        this.purchased_at = purchased_at;
     }
 
     @Override

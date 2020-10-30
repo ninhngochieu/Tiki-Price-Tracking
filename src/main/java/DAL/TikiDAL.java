@@ -124,7 +124,7 @@ public class TikiDAL {
 
     public ArrayList<CommentDTO> getCommentsAllPage(ProductDTO p) {
         ArrayList<CommentDTO> comments = new ArrayList<>();
-        JSONObject obj = getJSONObjectFromURL("https://tiki.vn/api/v2/reviews?product_id="+p.getId()+"&sort=score&limit=15");
+        JSONObject obj = getJSONObjectFromURL("https://tiki.vn/api/v2/reviews?product_id="+p.getId()+"&sort=score&limit=10");
         try {
             if(obj.getInt("reviews_count")==0){//Neu ko co comment nao
                 System.out.println("Khong co comment nao duoc lay");
@@ -132,13 +132,17 @@ public class TikiDAL {
                 JSONArray commentArray = obj.getJSONArray("data");//Lay tat ca comment
                 commentArray.forEach(item->{
                     JSONObject c = (JSONObject)item;
+                    JSONObject info = c.getJSONObject("created_by");
+                    String full_name = info.getString("name");
                     CommentDTO commentDTO = new CommentDTO(
                             c.getInt("id")+"",
                             c.getString("title"),
                             c.getString("content"),
                             c.getInt("thank_count"),
                             c.getFloat("rating"),
-                            c.getInt("product_id")+""
+                            c.getInt("product_id")+"",
+                            full_name,
+                            c.getInt("created_at")
                     );
                 comments.add(commentDTO);
                 });
