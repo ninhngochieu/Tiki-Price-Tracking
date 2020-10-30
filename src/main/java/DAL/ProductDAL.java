@@ -2,6 +2,7 @@ package DAL;
 
 import DTO.ProductDTO;
 import DTO.TypeDTO;
+import org.json.JSONObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,22 +48,16 @@ public class ProductDAL extends DB implements DAL {
     public boolean update(Object o) {
         ProductDTO x = (ProductDTO) o;
         try {
-            String sql = "UPDATE `product` SET " +
-                    "`name`=?," +
-                    "`image`=?," +
-                    "`price`=?," +
-                    "`review_count`=?," +
-                    "`id_item`=?" +
-                    " WHERE `id`=?";
+            String sql = "UPDATE `product` SET `name`=?,`image`=?,`price`=?,`review_count`=?,`id_item`=?,`rating_average`=?,`star`=? WHERE `id` = ? ";
             PreparedStatement statement = this.connection.prepareStatement(sql);
             statement.setString(1,x.getName());
             statement.setString(2,x.getImage());
             statement.setInt(3,x.getPrice());
             statement.setInt(4,x.getReview_count());
             statement.setString(5,x.getId_item());
-            statement.setString(6,x.getId());
-//            statement.setInt(1,x.getPrice());
-//            statement.setString(2,x.getId());
+            statement.setFloat(6,x.getRating_average());
+            statement.setObject(7,x.getStar().toString());
+            statement.setString(8,x.getId());
             return statement.executeUpdate()>0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -102,7 +97,9 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("image"),
                         rs.getString("id_item"),
                         rs.getInt("price"),
-                        rs.getInt("review_count")
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(rs.getObject("star"))
                 );
                 productDTOS.add(product);
             }

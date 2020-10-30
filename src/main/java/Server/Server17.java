@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,7 +21,8 @@ public class Server17 implements Runnable{
     private ArrayList<Object> listType;
     private ProductBAL productBAL;
     private BAL BAL;
-
+    private PublicKey publicKey;
+    private PrivateKey privateKey;
     private static ArrayListInstance listInstance=ArrayListInstance.getInstance();
 
     public Server17(Socket socket) {
@@ -28,6 +31,7 @@ public class Server17 implements Runnable{
         this.BAL = new BAL();
         this.listSP = listInstance.list_product;
         this.listType = listInstance.list_type;
+
 
         try {
            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

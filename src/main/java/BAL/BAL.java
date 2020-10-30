@@ -27,7 +27,7 @@ public class BAL {
         int i=1;
         for (Object x:list_product) {
             System.out.println("****************************************************");
-            tikiBAL.setPrice_Review((ProductDTO) x);
+            tikiBAL.update((ProductDTO) x);
             if(productBAL.update((ProductDTO) x)&&historyBAL.insertHistory((ProductDTO) x)){
                 System.out.println(i+". Them lich su "+x);
             }else {

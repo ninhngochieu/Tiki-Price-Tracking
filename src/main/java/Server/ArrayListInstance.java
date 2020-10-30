@@ -2,12 +2,13 @@ package Server;
 
 import BAL.ProductBAL;
 import BAL.TypeBAL;
+import DTO.ProductDTO;
 
 import java.util.ArrayList;
 
 public class ArrayListInstance {
-    public static ArrayList list_type;
-    public static ArrayList list_product;
+    public static ArrayList<Object> list_type;
+    public static ArrayList<Object> list_product;
     private static ArrayListInstance listInstance;
     private ArrayListInstance(){
         ProductBAL productBAL = new ProductBAL();

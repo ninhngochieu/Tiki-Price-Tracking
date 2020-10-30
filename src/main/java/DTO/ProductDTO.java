@@ -1,9 +1,11 @@
 package DTO;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ProductDTO implements Serializable{
+public class ProductDTO implements Comparable{
     private String id;
     private String name;
     private String image;
@@ -11,6 +13,43 @@ public class ProductDTO implements Serializable{
     private int price;
     private int review_count=0;
     private float rating_average;
+    private JSONObject star;
+    private int index = 99;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public float getRating_average() {
+        return rating_average;
+    }
+
+    public void setRating_average(float rating_average) {
+        this.rating_average = rating_average;
+    }
+
+    public JSONObject getStar() {
+        return star;
+    }
+
+    public void setStar(JSONObject star) {
+        this.star = star;
+    }
+
+    public ProductDTO(String id, String name, String image, String id_item, int price, int review_count, float rating_average, JSONObject star) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.id_item = id_item;
+        this.price = price;
+        this.review_count = review_count;
+        this.rating_average = rating_average;
+        this.star = star;
+    }
 
     public ProductDTO() {
     }
@@ -38,16 +77,6 @@ public class ProductDTO implements Serializable{
         this.image = image;
         this.id_item = id_item;
         this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "ProductDTO{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", id_item='" + id_item + '\'' +
-                ", price=" + price +
-                '}';
     }
 
     public String getId_item() {
@@ -88,5 +117,22 @@ public class ProductDTO implements Serializable{
 
     public int getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", index=" + index +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        ProductDTO p = (ProductDTO) o;
+        if(index==((ProductDTO) o).index) return 0;
+        else if(index>((ProductDTO) o).index) return 1;
+        else return -1;
     }
 }

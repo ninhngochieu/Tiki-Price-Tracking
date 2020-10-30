@@ -1,13 +1,10 @@
 package BAL;
 
-import DAL.DAL;
 import DAL.ProductDAL;
 import DTO.ProductDTO;
 import Server.ArrayListInstance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductBAL{
@@ -34,12 +31,40 @@ public class ProductBAL{
         }
     }
 
-    public ArrayList<Object> getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page) {
-        if(params.get("idCategory").equalsIgnoreCase("1")){
+    public Object getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page) {
+        String idCategory = params.get("idCategory");
+        String key = params.get("key");
+        if(idCategory.equalsIgnoreCase("1")){
+            //return test(key);
             return productDAL.getByName(params.get("key"),per_page,current_page);
         }else {
             return productDAL.getByIdName(params.get("idCategory"),params.get("key"),per_page,current_page);
         }
+    }
+
+    private Object test(String key) {
+        ArrayList<ProductDTO> fillter = new ArrayList(instance.list_product
+                .stream().filter(x->{
+                    ProductDTO p = (ProductDTO) x;
+                    if(p.getName().toLowerCase().contains(key)){
+                        String names[] = p.getName().toLowerCase().split(" ");
+                        boolean flag = true;
+                        for (int i = 0; (i < names.length && flag) == true; i++) {
+                            if(names[i].toLowerCase().equalsIgnoreCase(key)) {
+                                p.setIndex(i);
+                                flag = false;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList()));
+        Collections.sort(fillter);
+        fillter.forEach(x->{
+            System.out.println(x.toString());
+        });
+        return fillter;
     }
 
     public int getTotal(HashMap<String, String> params) {
@@ -47,35 +72,6 @@ public class ProductBAL{
     }
 
     public Object suggestNameProduct(HashMap<String, String> params) {
-        String idCategory = params.get("idCategory");
-        String key = params.get("key");
-        ArrayList<ProductDTO> list_product = instance.list_product;
-        if(idCategory.equalsIgnoreCase("1")){
-            return new ArrayList<>(list_product
-                    .stream()
-                    .filter(x->x.getName().contains(key))
-                    .collect(Collectors.toList()));
-        }else {
-            return new ArrayList<>(list_product
-                    .stream()
-                    .filter(x->x.getId_item().equalsIgnoreCase(idCategory))
-                    .filter(x->x.getName().contains(key))
-                    .collect(Collectors.toList()));
-        }
+        return new Object();
     }
-
-//    public Object getSuggestNameProduct(HashMap<String, String> params) {
-//        ArrayList<ProductDTO> list_product= instance.list_product;
-//        ArrayList<String> name_products=new ArrayList<>();
-//        list_product.forEach(x->{
-//            if(!params.get("idCategory").equalsIgnoreCase("1")&&x.getName().contains(params.get("key"))) {
-//                name_products.add(x.getName());
-//            }else {
-//                if(x.getName().contains(params.get("key"))){
-//                    name_products.add(x.getName());
-//                }
-//            }
-//        });
-//        return name_products;
-//    }
 }

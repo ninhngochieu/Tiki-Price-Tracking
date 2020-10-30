@@ -70,10 +70,11 @@ public class TikiBAL {
         }
         return list;
     }
-    public void setPrice_Review(ProductDTO x) {
-        System.out.println("Price "+x.getPrice()+"/"+"Review count "+x.getReview_count());
+    public void update(ProductDTO x) {
+        System.out.println("Price "+x.getPrice()+"/"+"Review count "+x.getReview_count()+"/"+x.getRating_average()+"/"+x.getStar());
         tikiDAL.setPriceAndReview(x);
-        System.out.println("New price "+x.getPrice()+"/"+"New review count "+x.getReview_count());
+        tikiDAL.setStars(x);
+        System.out.println("New price "+x.getPrice()+"/"+"New review count "+x.getReview_count()+"/"+x.getRating_average()+"/"+x.getStar());
     }
 
 }

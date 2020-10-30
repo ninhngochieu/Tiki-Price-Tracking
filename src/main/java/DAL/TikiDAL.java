@@ -163,16 +163,34 @@ public class TikiDAL {
             x.setPrice(price);
         }catch (JSONException e){
             e.printStackTrace();
-            System.out.println("Khong ton tai thuoc tinh nay!");
+            System.out.println("Khong lay duoc gia!");
         }
         try {
             int review_count = obj.getInt("review_count");
             x.setReview_count(review_count);
         }catch (JSONException e){
             e.printStackTrace();
-            System.out.println("Khong ton tai thuoc tinh nay!");
+            System.out.println("Khong lay dc so luong review!");
         }
         return true;
     }
 
+    public boolean setStars(ProductDTO x) {
+        JSONObject obj = getJSONObjectFromURL("https://tiki.vn/api/v2/reviews?product_id="+x.getId()+"&sort=score&limit=1");
+        try {
+            float rating_average =  obj.getFloat("rating_average");
+            x.setRating_average(rating_average);
+        }catch (JSONException e){
+            e.printStackTrace();
+            System.out.println("Khong lay duoc rating trung binh!");
+        }
+        try {
+            JSONObject star = obj.getJSONObject("stars");
+            x.setStar(star);
+        }catch (JSONException e){
+            e.printStackTrace();
+            System.out.println("Khong lay duoc so luong star");
+        }
+        return true;
+    }
 }

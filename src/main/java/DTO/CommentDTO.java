@@ -1,7 +1,5 @@
 package DTO;
 
-import jdk.jfr.Unsigned;
-
 public class CommentDTO{
     private String id;
     private String title;
