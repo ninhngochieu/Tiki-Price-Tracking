@@ -124,6 +124,12 @@ public class ProductDTO implements Comparable{
         return "ProductDTO{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", id_item='" + id_item + '\'' +
+                ", price=" + price +
+                ", review_count=" + review_count +
+                ", rating_average=" + rating_average +
+                ", star=" + star +
                 ", index=" + index +
                 '}';
     }

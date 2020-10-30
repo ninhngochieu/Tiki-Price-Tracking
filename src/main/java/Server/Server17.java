@@ -45,7 +45,7 @@ public class Server17 implements Runnable{
     public void run() {
         try{
             String data="";
-            while (true){ //
+            while (true){
                 data = this.in.readLine();
                 HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
                 HashMap<String,Object> map = processingData(params);

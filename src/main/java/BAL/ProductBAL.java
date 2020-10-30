@@ -43,28 +43,29 @@ public class ProductBAL{
     }
 
     private Object test(String key) {
-        ArrayList<ProductDTO> fillter = new ArrayList(instance.list_product
-                .stream().filter(x->{
-                    ProductDTO p = (ProductDTO) x;
-                    if(p.getName().toLowerCase().contains(key)){
-                        String names[] = p.getName().toLowerCase().split(" ");
-                        boolean flag = true;
-                        for (int i = 0; (i < names.length && flag) == true; i++) {
-                            if(names[i].toLowerCase().equalsIgnoreCase(key)) {
-                                p.setIndex(i);
-                                flag = false;
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList()));
-        Collections.sort(fillter);
-        fillter.forEach(x->{
-            System.out.println(x.toString());
-        });
-        return fillter;
+//        ArrayList<ProductDTO> fillter = new ArrayList(instance.list_product
+//                .stream().filter(x->{
+//                    ProductDTO p = (ProductDTO) x;
+//                    if(p.getName().toLowerCase().contains(key)){
+//                        String names[] = p.getName().toLowerCase().split(" ");
+//                        boolean flag = true;
+//                        for (int i = 0; (i < names.length && flag) == true; i++) {
+//                            if(names[i].toLowerCase().equalsIgnoreCase(key)) {
+//                                p.setIndex(i);
+//                                flag = false;
+//                            }
+//                        }
+//                        return true;
+//                    }
+//                    return false;
+//                })
+//                .collect(Collectors.toList()));
+//        Collections.sort(fillter);
+//        fillter.forEach(x->{
+//            System.out.println(x.toString());
+//        });
+//        return fillter;
+        return instance.list_product;
     }
 
     public int getTotal(HashMap<String, String> params) {

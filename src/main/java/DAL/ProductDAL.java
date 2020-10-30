@@ -99,7 +99,7 @@ public class ProductDAL extends DB implements DAL {
                         rs.getInt("price"),
                         rs.getInt("review_count"),
                         rs.getFloat("rating_average"),
-                        new JSONObject(rs.getObject("star"))
+                        new JSONObject(rs.getString("star"))
                 );
                 productDTOS.add(product);
             }
@@ -122,11 +122,13 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price")
+                        rs.getInt("price"),
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(rs.getString("star"))
                 );
                 productDTOS.add(product);
             }
-            System.out.println(productDTOS);
             return productDTOS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -146,7 +148,10 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price")
+                        rs.getInt("price"),
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(rs.getString("star"))
                 );
                 productDTOS.add(product);
             }
@@ -169,11 +174,13 @@ public class ProductDAL extends DB implements DAL {
                         rs.getString("name"),
                         rs.getString("image"),
                         rs.getString("id_item"),
-                        rs.getInt("price")
+                        rs.getInt("price"),
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(rs.getString("star"))
                 );
                 productDTOS.add(product);
             }
-            System.out.println(productDTOS);
             return productDTOS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
