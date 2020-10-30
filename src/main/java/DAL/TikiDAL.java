@@ -64,12 +64,13 @@ public class TikiDAL {
             e.printStackTrace();
             System.out.println("Khong the lay JSONObj");
             System.out.println("************************************");
+            return new JSONObject();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Khong the lay du lieu!");
             System.out.println("************************************");
+            return new JSONObject();
         }
-        return null;
     }
 
     public ArrayList<Type_ProductDTO> getListIdOnPage(TypeDTO x, int page, ArrayList<Type_ProductDTO> list_product_id) {
@@ -126,7 +127,7 @@ public class TikiDAL {
         ArrayList<CommentDTO> comments = new ArrayList<>();
         JSONObject obj = getJSONObjectFromURL("https://tiki.vn/api/v2/reviews?product_id="+p.getId()+"&sort=score&limit=10");
         try {
-            if(obj.getInt("reviews_count")==0){//Neu ko co comment nao
+            if(obj.has("reviews_count")&&obj.getInt("reviews_count")==0){//Neu ko co comment nao
                 System.out.println("Khong co comment nao duoc lay");
             }else {
                 JSONArray commentArray = obj.getJSONArray("data");//Lay tat ca comment
