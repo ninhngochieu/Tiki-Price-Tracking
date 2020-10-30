@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ArrayListInstance {
     public static ArrayList list_type;
     public static ArrayList list_product;
-    private static ArrayListInstance listInstance=null;
+    private static ArrayListInstance listInstance;
     private ArrayListInstance(){
         ProductBAL productBAL = new ProductBAL();
         TypeBAL typeBAL = new TypeBAL();

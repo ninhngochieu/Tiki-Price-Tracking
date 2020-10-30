@@ -18,16 +18,16 @@ public class main {
         //balService.insertHistory();
         //balService.insertComment();
 
-        try {
-            server = new ServerSocket(5002);
-            System.out.println("Waiting for client....!");
-            while (true){
-                Socket socket = server.accept();
-                System.out.println(socket.toString()+" connected!");
-                service.execute(new Server17(socket));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            server = new ServerSocket(5002);
+//            System.out.println("Waiting for client....!");
+//            while (true){
+//                Socket socket = server.accept();
+//                System.out.println(socket.toString()+" connected!");
+//                service.execute(new Server17(socket));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

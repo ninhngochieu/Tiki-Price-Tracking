@@ -17,7 +17,6 @@ public abstract class DB implements DAL{
     }
 
     private Connection getConnection() {
-        Connection connection=this.connection;
         if(connection==null){
             try {
                 connection = DriverManager.getConnection("jdbc:mariadb://"+_HOST+"/"+_DB_NAME, "root", null);
