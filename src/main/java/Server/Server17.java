@@ -59,7 +59,7 @@ public class Server17 implements Runnable{
         HashMap<String,Object> map = new HashMap<>();
         switch (params.get("action")){
             case "getAllCategory":
-                map = new SenderDTO(this.listType,"123456");
+                map = new SenderDTO(this.listType,"123456",true);
                 return map;
             case "search":
                 int total = productBAL.getTotal(params);
@@ -69,14 +69,14 @@ public class Server17 implements Runnable{
 
                 map = new PagingSenderDTO(
                         productBAL.getAllProductWithParam(params,per_page,current_page),
-                        "123456", true, total, per_page, current_page, last_page
+                         true, total, per_page, current_page, last_page
                 );
                 return map;
             case "detailProduct":
-                map = new SenderDTO(BAL.getDetailById(params),"123546");
+                map = new SenderDTO(BAL.getDetailById(params),true);
                 return map;
             case "suggest_result":
-                map = new SenderDTO(productBAL.suggestNameProduct(params),"123456");
+                map = new SenderDTO(productBAL.suggestNameProduct(params),true);
                 return map;
             default:break;
         }

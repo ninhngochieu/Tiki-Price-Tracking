@@ -6,8 +6,8 @@ public class PagingSenderDTO extends SenderDTO{
     private int current_page = 0;
     private int last_page = 0;
 
-    public PagingSenderDTO(Object data, String key, boolean status, int total, int per_page, int current_page, int last_page) {
-        super(data, key, status);
+    public PagingSenderDTO(Object data, boolean status, int total, int per_page, int current_page, int last_page) {
+        super(data, status);
         this.total = total;
         this.per_page = per_page;
         this.current_page = current_page;

@@ -8,14 +8,6 @@ public class SenderDTO extends HashMap<String,Object>{
     private String key;
     private boolean status = true;
 
-    public SenderDTO(Object data, String key) {
-        this.data = data;
-        this.key = key;
-
-        this.put("data",data);
-        this.put("key",key);
-    }
-
     public SenderDTO(Object data, String key, boolean status) {
         this.data = data;
         this.key = key;
@@ -27,6 +19,13 @@ public class SenderDTO extends HashMap<String,Object>{
 
     }
 
+    public SenderDTO(Object data, boolean status) {
+        this.data = data;
+        this.status = status;
+
+        this.put("data",data);
+        this.put("status",status);
+    }
 
     public SenderDTO() {
     }
