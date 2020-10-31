@@ -66,15 +66,22 @@ public class Server17 implements Runnable{
                 map = new SenderDTO(this.listType,"123456",true);
                 return map;
             case "search":
-                int total = productBAL.getTotal(params);
-                int per_page = 16;
+//                int total = productBAL.getTotal(params);
                 int current_page = Integer.parseInt(params.get("page"));
-                int last_page = total/per_page +1;
+                int per_page = 16;
 
-                map = new PagingSenderDTO(
-                        productBAL.getAllProductWithParam(params,per_page,current_page),
-                         true, total, per_page, current_page, last_page
-                );
+                HashMap<String,Integer> total_last_page = new HashMap<>();
+
+                ArrayList result_list = productBAL.getAllProductWithParam(params,per_page,current_page,total_last_page);
+
+//                map = new PagingSenderDTO(
+//                        productBAL.getAllProductWithParam(params,per_page,current_page),
+//                         true, total, per_page, current_page, last_page
+//                );
+                map = new PagingSenderDTO(result_list,
+                        true,total_last_page.get("total"),
+                        per_page,current_page,
+                        total_last_page.get("last_page"));
                 return map;
             case "detailProduct":
                 map = new SenderDTO(BAL.getDetailById(params),true);

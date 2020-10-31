@@ -187,4 +187,30 @@ public class ProductDAL extends DB implements DAL {
         }
         return null;
     }
+
+    public ArrayList<ProductDTO> getByName(String name) {
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `product` WHERE MATCH (`name`) AGAINST ('"+name+"' IN NATURAL LANGUAGE MODE)";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                ProductDTO product = new ProductDTO(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("image"),
+                        rs.getString("id_item"),
+                        rs.getInt("price"),
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(rs.getString("star"))
+                );
+                productDTOS.add(product);
+            }
+            return productDTOS;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 }
