@@ -36,45 +36,21 @@ public class ProductBAL{
         }
     }
 
-    public PaginateList getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page, HashMap total_last_page) {
+    public PaginateList getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page) {
         String idCategory = params.get("idCategory");
         String key = params.get("key");
 
-        //if(!instance.result_list.containsKey(key)) instance.result_list.put(key,searchAll(key));
-        //if(!instance.result_list.containsKey(key)) instance.result_list.put(key,productDAL.getByName(key));
         if(!instance.result_list.containsKey(key)) instance.result_list.put(key,searchAll(key,productDAL.getByName(key)));
-        //ArrayList<ProductDTO> result_list = searchAll(key);
+        if(instance.result_list.get(key).isEmpty()) instance.result_list.put(key,searchAll(key,productDAL.getByAllName(key)));
 
         if(idCategory.equalsIgnoreCase("1")){
-            //return searchAll(key,per_page,current_page);
-            //return productDAL.getByName(params.get("key"),per_page,current_page);//SQL
-            PaginateList<ProductDTO> list = new PaginateList<>();
-            int total = instance.result_list.get(key).size();//Lay tong so trang
-            int last_page = total/per_page + 1;//lay so trang cuoi cung
-
-            total_last_page.put("total",total);
-            total_last_page.put("last_page",last_page);
-            int offset = (current_page-1)*per_page;//vi tri bat dau
-            paginate(offset,instance.result_list.get(key),list);
-            return list;//tra ve ket qua phan trang
+            return new PaginateList(instance.result_list.get(key),per_page,current_page).getResult();//tra ve ket qua phan trang
         }else {
-            //return productDAL.getByIdName(params.get("idCategory"),params.get("key"),per_page,current_page);
-            PaginateList temp_list = new PaginateList(instance.result_list.get(key).stream().filter(x->{
+            ArrayList temp_list = new ArrayList(instance.result_list.get(key).stream().filter(x->{
                 return x.getId_item().equalsIgnoreCase(idCategory);
             }).collect(Collectors.toList())); //List tam da loc theo id theo ket qua tren
 
-            PaginateList list = new PaginateList<>();
-            int total = temp_list.size();//Lay tong so trang
-            int last_page = total/per_page + 1;//lay so trang cuoi cung
-
-
-            total_last_page.put("total",total);
-            total_last_page.put("last_page",last_page);
-
-            int offset = (current_page-1)*per_page;//vi tri bat dau
-            paginate(offset,temp_list,list);
-            return list;//tra ve ket qua phan trang
-
+            return new PaginateList(temp_list,per_page,current_page).getResult();
         }
     }
 

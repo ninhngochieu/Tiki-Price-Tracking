@@ -1,16 +1,29 @@
 package Server;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import DTO.ProductDTO;
 
-public class PaginateList<E> extends ArrayList<E>{
+import java.util.ArrayList;
+
+public class PaginateList extends ArrayList{
     private int total;
     private int last_page;
     private int per_page;
     private int current_page;
+    private ArrayList<ProductDTO> list_paginate;
 
-    public PaginateList() {
+    public PaginateList(ArrayList list_paginate, int per_page, int current_page) {
+        this.per_page = per_page;
+        this.current_page = current_page;
+        this.list_paginate = list_paginate;
+        this.total = list_paginate.size();
+        this.last_page = this.total%16==0?this.total/per_page:this.total/per_page+1;
+    }
 
+    public PaginateList(int total, int last_page, int per_page, int current_page) {
+        this.total = total;
+        this.last_page = last_page;
+        this.per_page = per_page;
+        this.current_page = current_page;
     }
 
     public int getTotal() {
@@ -29,34 +42,37 @@ public class PaginateList<E> extends ArrayList<E>{
         this.last_page = last_page;
     }
 
-    public PaginateList(Collection<? extends E> c) {
-        super(c);
-    }
-
     public int getPer_page() {
         return per_page;
     }
 
-    public PaginateList perPage(int per_page) {
+    public void setPer_page(int per_page) {
         this.per_page = per_page;
-        this.last_page = this.total/per_page+1;
-        return this;
     }
 
     public int getCurrent_page() {
         return current_page;
     }
 
-    public PaginateList currentPage(int current_page) {
+    public void setCurrent_page(int current_page) {
         this.current_page = current_page;
-        return this;
     }
-    public ArrayList<E> getResult(){
-        ArrayList<E> result = new ArrayList();
-        int offset = (this.current_page-1)*this.per_page;
-        for (int i = offset,flag = 0; i < this.size()&&flag<12;i++,flag++) {
-            result.add(this.get(i));
+
+    public ArrayList getList_paginate() {
+        return list_paginate;
+    }
+
+    public void setList_paginate(ArrayList list_paginate) {
+        this.list_paginate = list_paginate;
+    }
+
+    public PaginateList getResult(){
+        PaginateList result = new PaginateList(this.total,this.last_page,this.per_page,this.current_page);
+        int offset = (current_page-1)*per_page;
+        for (int i = offset,flag = 0; i < total&&flag<12;i++,flag++) {
+            result.add(this.list_paginate.get(i));
         }
         return result;
     }
 }
+
