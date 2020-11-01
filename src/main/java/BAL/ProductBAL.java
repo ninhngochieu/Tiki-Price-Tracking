@@ -3,6 +3,7 @@ package BAL;
 import DAL.ProductDAL;
 import DTO.ProductDTO;
 import Server.ArrayListInstance;
+import Server.PaginateList;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -35,7 +36,7 @@ public class ProductBAL{
         }
     }
 
-    public ArrayList getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page,HashMap total_last_page) {
+    public PaginateList getAllProductWithParam(HashMap<String, String> params, int per_page, int current_page, HashMap total_last_page) {
         String idCategory = params.get("idCategory");
         String key = params.get("key");
 
@@ -47,7 +48,7 @@ public class ProductBAL{
         if(idCategory.equalsIgnoreCase("1")){
             //return searchAll(key,per_page,current_page);
             //return productDAL.getByName(params.get("key"),per_page,current_page);//SQL
-            ArrayList<ProductDTO> list = new ArrayList<>();
+            PaginateList<ProductDTO> list = new PaginateList<>();
             int total = instance.result_list.get(key).size();//Lay tong so trang
             int last_page = total/per_page + 1;//lay so trang cuoi cung
 
@@ -58,11 +59,11 @@ public class ProductBAL{
             return list;//tra ve ket qua phan trang
         }else {
             //return productDAL.getByIdName(params.get("idCategory"),params.get("key"),per_page,current_page);
-            ArrayList<ProductDTO> temp_list = new ArrayList(instance.result_list.get(key).stream().filter(x->{
+            PaginateList temp_list = new PaginateList(instance.result_list.get(key).stream().filter(x->{
                 return x.getId_item().equalsIgnoreCase(idCategory);
             }).collect(Collectors.toList())); //List tam da loc theo id theo ket qua tren
 
-            ArrayList<ProductDTO> list = new ArrayList<>();
+            PaginateList list = new PaginateList<>();
             int total = temp_list.size();//Lay tong so trang
             int last_page = total/per_page + 1;//lay so trang cuoi cung
 
@@ -78,10 +79,8 @@ public class ProductBAL{
     }
 
     private void paginate(int offset, ArrayList<ProductDTO> result_list, ArrayList<ProductDTO> list) {
-        int flag = 1;
-        for (int i = offset; i < result_list.size()&&flag<=12;i++) {
+        for (int i = offset,flag = 0; i < result_list.size()&&flag<12;i++,flag++) {
             list.add(result_list.get(i));
-            flag++;
         }
     }
 

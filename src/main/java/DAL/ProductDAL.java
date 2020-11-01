@@ -2,6 +2,7 @@ package DAL;
 
 import DTO.ProductDTO;
 import DTO.TypeDTO;
+import Server.PaginateList;
 import org.json.JSONObject;
 
 import java.sql.PreparedStatement;
@@ -188,8 +189,8 @@ public class ProductDAL extends DB implements DAL {
         return null;
     }
 
-    public ArrayList<ProductDTO> getByName(String name) {
-        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+    public PaginateList<ProductDTO> getByName(String name) {
+        PaginateList<ProductDTO> productDTOS = new PaginateList<>();
         try {
             String sql = "SELECT * FROM `product` WHERE MATCH (`name`) AGAINST ('"+name+"' IN NATURAL LANGUAGE MODE)";
             Statement statement = this.connection.createStatement();
