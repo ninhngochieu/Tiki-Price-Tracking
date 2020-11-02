@@ -216,8 +216,7 @@ public class ProductDAL extends DB implements DAL {
     public ArrayList<ProductDTO> getByAllName(String name) {
         ArrayList<ProductDTO> productDTOS = new ArrayList<>();
         try {
-//            String sql = "SELECT * FROM `product` WHERE `name` LIKE '%"+name+"%'";
-            String sql = "SELECT * FROM `product` WHERE MATCH (`name`) AGAINST ('"+name+"' WITH QUERY EXPANSION)";
+            String sql = "SELECT * FROM `product` WHERE `name` LIKE '%"+name+"%'";
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()){

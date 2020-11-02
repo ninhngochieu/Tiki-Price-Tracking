@@ -44,7 +44,19 @@ public class ProductBAL{
         if(instance.result_list.get(key).isEmpty()) instance.result_list.put(key,searchAll(key,productDAL.getByAllName(key)));
 
         if(idCategory.equalsIgnoreCase("1")){
-            return new PaginateList(instance.result_list.get(key),per_page,current_page).getResult();//tra ve ket qua phan trang
+            ArrayList<ProductDTO> fillter_price= new ArrayList(instance.result_list.get(key));
+            if(params.get("min_price")!=null){
+                fillter_price.removeIf(x->{
+                   return x.getPrice() < Integer.parseInt(params.get("min_price"));
+                });
+            }
+            if(params.get(params.get("max_price"))!=null){
+                fillter_price.removeIf(x->{
+                   return x.getPrice()> Integer.parseInt(params.get("max_price"));
+                });
+            }
+//            return new PaginateList(instance.result_list.get(key),per_page,current_page).getResult();//tra ve ket qua phan trang
+            return new PaginateList(fillter_price,per_page,current_page).getResult();//tra ve ket qua phan trang
         }else {
             ArrayList temp_list = new ArrayList(instance.result_list.get(key).stream().filter(x->{
                 return x.getId_item().equalsIgnoreCase(idCategory);
