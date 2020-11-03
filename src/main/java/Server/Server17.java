@@ -93,7 +93,7 @@ public class Server17 implements Runnable{
                 String action[] = p[i].split("=");
                 params.put(action[0],action[1]);
             }catch (Exception e){
-                params.put("key",null);
+
             }
         }
         return params;

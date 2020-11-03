@@ -45,16 +45,7 @@ public class ProductBAL{
 
         if(idCategory.equalsIgnoreCase("1")){
             ArrayList<ProductDTO> fillter_price= new ArrayList(instance.result_list.get(key));
-            if(params.get("min_price")!=null){
-                fillter_price.removeIf(x->{
-                   return x.getPrice() < Integer.parseInt(params.get("min_price"));
-                });
-            }
-            if(params.get(params.get("max_price"))!=null){
-                fillter_price.removeIf(x->{
-                   return x.getPrice()> Integer.parseInt(params.get("max_price"));
-                });
-            }
+            fillterPrice(fillter_price,params);
 //            return new PaginateList(instance.result_list.get(key),per_page,current_page).getResult();//tra ve ket qua phan trang
             return new PaginateList(fillter_price,per_page,current_page).getResult();//tra ve ket qua phan trang
         }else {
@@ -62,7 +53,23 @@ public class ProductBAL{
                 return x.getId_item().equalsIgnoreCase(idCategory);
             }).collect(Collectors.toList())); //List tam da loc theo id theo ket qua tren
 
+            ArrayList<ProductDTO> fillter_price= new ArrayList(temp_list);
+            fillterPrice(fillter_price,params);
             return new PaginateList(temp_list,per_page,current_page).getResult();
+        }
+    }
+
+    private void fillterPrice(ArrayList<ProductDTO> fillter_price, HashMap<String, String> params) {
+        if(params.get("min_price")!=null){
+            fillter_price.removeIf(x->{
+                return x.getPrice() < Integer.parseInt(params.get("min_price"));
+            });
+        }
+        if(params.get("max_price")!=null){
+            fillter_price.removeIf(x->{
+                System.out.println(x.getPrice());
+                return x.getPrice() > Integer.parseInt(params.get("max_price"));
+            });
         }
     }
 
