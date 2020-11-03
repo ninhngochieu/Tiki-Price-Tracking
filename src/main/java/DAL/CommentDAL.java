@@ -24,7 +24,7 @@ public class CommentDAL extends DB implements DAL{
             statement.setFloat(5,c.getRating());
             statement.setString(6,c.getId_product());
             statement.setString(7,c.getFull_name());
-            statement.setInt(8,c.getPurchased_at());
+            statement.setLong(8,c.purchased_at);
             return statement.executeUpdate()!=0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

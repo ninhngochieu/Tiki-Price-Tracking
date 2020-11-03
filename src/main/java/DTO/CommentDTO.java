@@ -1,5 +1,7 @@
 package DTO;
 
+import java.util.Date;
+
 public class CommentDTO{
     private String id;
     private String title;
@@ -8,7 +10,7 @@ public class CommentDTO{
     private float rating;
     private String id_product;
     private String full_name;
-    private int purchased_at;
+    public long purchased_at;
 
     public CommentDTO(String id, String title, String content, int thank_count, float rating, String id_product) {
         this.id = id;
@@ -23,7 +25,7 @@ public class CommentDTO{
 
     }
 
-    public CommentDTO(String id, String title, String content, int thank_count, float rating, String id_product, String full_name, int purchased_at) {
+    public CommentDTO(String id, String title, String content, int thank_count, float rating, String id_product, String full_name, long purchased_at) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -43,8 +45,9 @@ public class CommentDTO{
         this.full_name = full_name;
     }
 
-    public int getPurchased_at() {
-        return purchased_at;
+    public String getPurchased_at() {
+        Date pa = new Date(purchased_at);
+        return pa.getDay()+"-"+pa.getMonth()+"-"+pa.getYear();
     }
 
     public void setPurchased_at(int purchased_at) {
@@ -109,5 +112,6 @@ public class CommentDTO{
     public void setRating(float rating) {
         this.rating = rating;
     }
+
 
 }

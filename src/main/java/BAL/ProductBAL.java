@@ -41,7 +41,7 @@ public class ProductBAL{
         String key = params.get("key");
 
         if(!instance.result_list.containsKey(key)) instance.result_list.put(key,searchAll(key,productDAL.getByName(key)));
-        if(instance.result_list.get(key).isEmpty()) instance.result_list.put(key,searchAll(key,productDAL.getByAllName(key)));
+        if(instance.result_list.get(key).isEmpty()) instance.result_list.put(key,productDAL.getByAllName(key));
 
         if(idCategory.equalsIgnoreCase("1")){
             ArrayList<ProductDTO> fillter_price= new ArrayList(instance.result_list.get(key));
@@ -67,7 +67,6 @@ public class ProductBAL{
         }
         if(params.get("max_price")!=null){
             fillter_price.removeIf(x->{
-                System.out.println(x.getPrice());
                 return x.getPrice() > Integer.parseInt(params.get("max_price"));
             });
         }
@@ -80,28 +79,27 @@ public class ProductBAL{
     }
 
     private ArrayList<ProductDTO> searchAll(String key, ArrayList<ProductDTO> list_product) {
-        ArrayList<ProductDTO> fillter = new ArrayList(list_product
-                .stream().filter(x->{
-                    ProductDTO p = (ProductDTO) x;
-                    p.setIndex(99);
-                    if(chuanHoa(p.getName()).toLowerCase().contains(chuanHoa(key))){
-                        String names[] = p.getName().toLowerCase().split(" ");
-                        boolean flag = true;
-                        for (int i = 0; (i < names.length && flag) == true; i++) {
-                            if(chuanHoa(names[i]).toLowerCase().equalsIgnoreCase(chuanHoa(key))) {
-                                p.setIndex(i);
-                                flag = false;
+            ArrayList<ProductDTO> fillter = new ArrayList(list_product
+                    .stream().filter(x->{
+                        ProductDTO p = (ProductDTO) x;
+                        p.setIndex(99);
+                        if(chuanHoa(p.getName()).toLowerCase().contains(chuanHoa(key))){
+                            String names[] = p.getName().toLowerCase().split(" ");
+                            boolean flag = true;
+                            for (int i = 0; (i < names.length && flag) == true; i++) {
+                                if(chuanHoa(names[i]).toLowerCase().equalsIgnoreCase(chuanHoa(key))) {
+                                    p.setIndex(i);
+                                    flag = false;
+                                }
                             }
+                            return true;
                         }
-                        return true;
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList()));
-        Collections.sort(fillter);
-        return fillter;
-    }
-
+                        return false;
+                    })
+                    .collect(Collectors.toList()));
+            Collections.sort(fillter);
+            return fillter;
+     }
     private String chuanHoa(String str) {
         str = str.replaceAll("à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ", "a");
         str = str.replaceAll("è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ", "e");

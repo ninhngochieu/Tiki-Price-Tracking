@@ -1,5 +1,6 @@
 package DTO;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,7 @@ import java.util.Date;
 public class HistoryDTO {
     private String id;
     private String id_product;
-    private Date last_update;
+    private Timestamp last_update;
     private int current_price;
 
     @Override
@@ -38,22 +39,19 @@ public class HistoryDTO {
         this.id_product = id_product;
     }
 
-    public Date getLast_update() {
-        return last_update;
+    public String getLast_update() {
+        String d = last_update.toString().split(" ")[0];
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(d);
+            return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return last_update.toString();
+        }
     }
 
-    public void setLast_update(Date last_update) {
-        Date date=new Date(last_update.getTime());
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-
-        this.last_update = cal.getTime();
-
+    public void setLast_update(Timestamp last_update) {
+        this.last_update = last_update;
     }
 
     public int getCurrent_price() {
@@ -67,7 +65,7 @@ public class HistoryDTO {
     public HistoryDTO() {
     }
 
-    public HistoryDTO(String id, String id_product, Date last_update, int current_price) {
+    public HistoryDTO(String id, String id_product, Timestamp last_update, int current_price) {
         this.id = id;
         this.id_product = id_product;
         this.last_update = last_update;
