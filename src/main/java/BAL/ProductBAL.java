@@ -71,13 +71,6 @@ public class ProductBAL{
             });
         }
     }
-
-    private void paginate(int offset, ArrayList<ProductDTO> result_list, ArrayList<ProductDTO> list) {
-        for (int i = offset,flag = 0; i < result_list.size()&&flag<12;i++,flag++) {
-            list.add(result_list.get(i));
-        }
-    }
-
     private ArrayList<ProductDTO> searchAll(String key, ArrayList<ProductDTO> list_product) {
             ArrayList<ProductDTO> fillter = new ArrayList(list_product
                     .stream().filter(x->{
@@ -124,6 +117,9 @@ public class ProductBAL{
     }
 
     public Object suggestNameProduct(HashMap<String, String> params) {
-        return new Object();
+        String key = params.get("key");
+        ArrayList list = productDAL.suggestProductByName(key);
+        if(list.isEmpty()) list = productDAL.suggestAllProductByName(key);
+        return list;
     }
 }

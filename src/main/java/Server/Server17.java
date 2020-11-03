@@ -2,7 +2,7 @@ package Server;
 
 import BAL.BAL;
 import BAL.ProductBAL;
-import DTO.PagingSenderDTO;
+import BAL.HistoryBAL;
 import DTO.SenderDTO;
 import org.json.JSONObject;
 
@@ -20,6 +20,7 @@ public class Server17 implements Runnable{
     private ArrayList<Object> listSP;
     private ArrayList<Object> listType;
     private ProductBAL productBAL;
+    private HistoryBAL historyBAL;
     private BAL BAL;
     private PublicKey publicKey;
     private PrivateKey privateKey;
@@ -29,10 +30,9 @@ public class Server17 implements Runnable{
         this.socket = socket;
         this.productBAL = new ProductBAL();
         this.BAL = new BAL();
+        this.historyBAL = new HistoryBAL();
         this.listSP = listInstance.list_product;
         this.listType = listInstance.list_type;
-
-
         try {
            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
            this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -87,7 +87,7 @@ public class Server17 implements Runnable{
                 map = new SenderDTO(productBAL.suggestNameProduct(params),true);
                 return map;
             case "fillter_hisory":
-                map = new SenderDTO();
+                map = new SenderDTO(historyBAL.getHistoryByDate(params),true);
                 break;
             default:break;
         }

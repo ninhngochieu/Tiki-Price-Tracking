@@ -40,14 +40,9 @@ public class HistoryDTO {
     }
 
     public String getLast_update() {
-        String d = last_update.toString().split(" ")[0];
-        try {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(d);
-            return date.getDay()+"-"+date.getMonth()+"-"+date.getYear();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return last_update.toString();
-        }
+        String date = last_update.toString().split(" ")[0];
+        String[] format_date = date.split("-");
+        return format_date[2]+"-"+format_date[1]+"-"+format_date[0];
     }
 
     public void setLast_update(Timestamp last_update) {

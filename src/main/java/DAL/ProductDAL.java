@@ -236,6 +236,36 @@ public class ProductDAL extends DB implements DAL {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return productDTOS;
+    }
+
+    public ArrayList<String> suggestProductByName(String key) {
+        ArrayList<String> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `product` WHERE MATCH (`name`) AGAINST ('"+key+"' IN NATURAL LANGUAGE MODE) LIMIT 6";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                productDTOS.add(rs.getString("name"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return productDTOS;
+    }
+
+    public ArrayList<String> suggestAllProductByName(String key) {
+        ArrayList<String> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT `name` FROM `product` WHERE `name` LIKE '"+key+"%' LIMIT 6";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                productDTOS.add(rs.getString("name"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return productDTOS;
     }
 }

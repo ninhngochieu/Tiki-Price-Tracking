@@ -15,4 +15,8 @@ public class HistoryBAL {
     public ArrayList<Object> getHistoryById(String id_product) {
         return historyDAL.getHistoryById(id_product);
     }
+
+    public Object getHistoryByDate(HashMap<String, String> params) {
+        return new Object();
+    }
 }
