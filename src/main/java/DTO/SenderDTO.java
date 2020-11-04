@@ -7,8 +7,43 @@ public class SenderDTO extends HashMap<String,Object>{
     private Object data;
     private String key;
     private boolean status = true;
+    private int min_price;
+    private int max_price;
 
-    public SenderDTO(Object data, String key, boolean status) {
+    private int total = 0;
+    private int per_page = 0;
+    private int current_page = 0;
+    private int last_page = 0;
+
+    public SenderDTO(Object data, boolean status, int total, int per_page, int current_page, int last_page) {
+        this.data = data;
+        this.status = status;
+        this.total = total;
+        this.per_page = per_page;
+        this.current_page = current_page;
+        this.last_page = last_page;
+    //Send data with paging
+        this.put("data",data);
+        this.put("status",status);
+        this.put("total",total);
+        this.put("per_page",per_page);
+        this.put("current_page",current_page);
+        this.put("last_page",last_page);
+    }
+
+    public SenderDTO(Object data, boolean status, int min_price, int max_price) {//Send data and max-min price
+        this.data = data;
+        this.status = status;
+        this.min_price = min_price;
+        this.max_price = max_price;
+
+        this.put("data",data);
+        this.put("status",status);
+        this.put("min_price",min_price);
+        this.put("max_price",max_price);
+    }
+
+    public SenderDTO(Object data, String key, boolean status) {//Send data with public key
         this.data = data;
         this.key = key;
         this.status = status;
@@ -19,7 +54,7 @@ public class SenderDTO extends HashMap<String,Object>{
 
     }
 
-    public SenderDTO(Object data, boolean status) {
+    public SenderDTO(Object data, boolean status) {//Send data
         this.data = data;
         this.status = status;
 
