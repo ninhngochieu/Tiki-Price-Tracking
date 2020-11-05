@@ -63,6 +63,56 @@ public class HistoryDAL extends DB implements DAL{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return historyDTOS;
+    }
+
+    public ArrayList<HistoryDTO> getALlHistoryByDate(String id, String start, String end) {
+        ArrayList<HistoryDTO> historyDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `history` WHERE `id_product` = '"+id+"' AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                HistoryDTO history = new HistoryDTO(
+                        rs.getString("id"),
+                        rs.getString("id_product"),
+                        rs.getTimestamp("last_update"),
+                        rs.getInt("current_price")
+                );
+                historyDTOS.add(history);
+            }
+            return historyDTOS;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return historyDTOS;
+    }
+
+    public int getMaxHistoryByDate(String id, String start, String end) {
+        try {
+            String sql="SELECT MAX(`current_price`) FROM `history` WHERE `id_product` = "+id+" AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getMinHistoryByDate(String id, String start, String end) {
+        try {
+            String sql="SELECT MIN(`current_price`) FROM `history` WHERE `id_product` = "+id+" AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
     }
 }

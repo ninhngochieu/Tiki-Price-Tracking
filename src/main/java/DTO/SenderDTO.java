@@ -31,7 +31,7 @@ public class SenderDTO extends HashMap<String,Object>{
         this.put("last_page",last_page);
     }
 
-    public SenderDTO(Object data, boolean status, int min_price, int max_price) {//Send data and max-min price
+    public SenderDTO(Object data, boolean status, int min_price, int max_price) {//Send data and max-min price//4 p
         this.data = data;
         this.status = status;
         this.min_price = min_price;
@@ -43,7 +43,7 @@ public class SenderDTO extends HashMap<String,Object>{
         this.put("max_price",max_price);
     }
 
-    public SenderDTO(Object data, String key, boolean status) {//Send data with public key
+    public SenderDTO(Object data, String key, boolean status) {//Send data with public key//3 param
         this.data = data;
         this.key = key;
         this.status = status;
@@ -54,7 +54,7 @@ public class SenderDTO extends HashMap<String,Object>{
 
     }
 
-    public SenderDTO(Object data, boolean status) {//Send data
+    public SenderDTO(Object data, boolean status) {//Send data//2 param
         this.data = data;
         this.status = status;
 

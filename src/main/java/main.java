@@ -27,9 +27,9 @@ public class main {
 //        }
         //balService.insertNewType();
         //balService.insertNewProduct();
-        balService.insertHistory();
+        //balService.insertHistory();
         //balService.insertComment();
-        //startSever(5002,service);
+        startSever(5002,service);
     }
 
     private static void tutorial() {

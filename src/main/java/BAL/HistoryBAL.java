@@ -1,9 +1,12 @@
 package BAL;
 
 import DAL.HistoryDAL;
+import DTO.HistoryDTO;
 import DTO.ProductDTO;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class HistoryBAL {
@@ -16,7 +19,20 @@ public class HistoryBAL {
         return historyDAL.getHistoryById(id_product);
     }
 
-    public Object getHistoryByDate(HashMap<String, String> params) {
-        return new Object();
+    public void getHistoryByDate(HashMap<String, String> params, HashMap<String, Object> data) {
+        String date_start[] =  params.get("start").split("-");
+        String date_end[] = params.get("end").split("-");
+
+        String start = formatDate(date_start);//Xu ly ngay thang theo chuan cua SQL
+        String end = formatDate(date_end);
+
+        data.put("history",historyDAL.getALlHistoryByDate(params.get("id"),start,end));
+        data.put("min_price",historyDAL.getMinHistoryByDate(params.get("id"),start,end));
+        data.put("max_price",historyDAL.getMaxHistoryByDate(params.get("id"),start,end));
+        System.out.println(data.toString());
+    }
+
+    private String formatDate(String[] date) {
+        return date[2]+"-"+date[1]+"-"+date[0];
     }
 }

@@ -87,7 +87,12 @@ public class Server17 implements Runnable{
                 map = new SenderDTO(productBAL.suggestNameProduct(params),true);
                 return map;
             case "fillter_hisory":
-                map = new SenderDTO(historyBAL.getHistoryByDate(params),true);
+                HashMap<String,Object> data = new HashMap();
+                historyBAL.getHistoryByDate(params,data);//Can lay nhieu du lieu nhu min va max
+                map = new SenderDTO(data.get("history"),
+                        true,
+                        Integer.parseInt(data.get("min_price").toString()),
+                        Integer.parseInt(data.get("max_price").toString()));
                 break;
             default:break;
         }
