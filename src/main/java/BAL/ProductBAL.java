@@ -112,10 +112,6 @@ public class ProductBAL{
         return str;
     }
 
-    public int getTotal(HashMap<String, String> params) {
-        return productDAL.getTotalByName(params.get("key")).size();
-    }
-
     public Object suggestNameProduct(HashMap<String, String> params) {
         String key = params.get("key");
         ArrayList list = productDAL.suggestProductByName(key);
