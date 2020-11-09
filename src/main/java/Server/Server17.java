@@ -70,15 +70,10 @@ public class Server17 implements Runnable{
                 int current_page = Integer.parseInt(params.get("page"));
                 int per_page = 16;
                 PaginateList result_list = productBAL.getAllProductWithParam(params,per_page,current_page);
-//                map = new PagingSenderDTO(result_list,
-//                        true,result_list.getTotal(),
-//                        per_page,current_page,
-//                        result_list.getLast_page());
                 map = new SenderDTO(result_list,
                         true,result_list.getTotal(),
                         per_page,current_page,
                         result_list.getLast_page());
-
                 return map;
             case "detailProduct":
                 map = new SenderDTO(BAL.getDetailById(params),true);
