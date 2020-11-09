@@ -22,8 +22,7 @@ public class Server17 implements Runnable{
     private ProductBAL productBAL;
     private HistoryBAL historyBAL;
     private BAL BAL;
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
+    private AES aes;
     private static ArrayListInstance listInstance=ArrayListInstance.getInstance();
 
     public Server17(Socket socket) {
@@ -39,6 +38,7 @@ public class Server17 implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.aes = new AES();
     }
 
     @Override
@@ -66,7 +66,6 @@ public class Server17 implements Runnable{
                 map = new SenderDTO(this.listType,"123456",true);
                 return map;
             case "search":
-                //int total = productBAL.getTotal(params);
                 int current_page = Integer.parseInt(params.get("page"));
                 int per_page = 16;
                 PaginateList result_list = productBAL.getAllProductWithParam(params,per_page,current_page);
@@ -109,6 +108,10 @@ public class Server17 implements Runnable{
 
     private void sendDataToClient(HashMap<String, Object> map) {
         try {
+            String s = new JSONObject(map).toString();
+            String x = this.aes.encrypt(s,"123");
+            System.out.println(x);
+            System.out.println(this.aes.decrypt(x,"123"));
             out.write(new JSONObject(map).toString());
             out.newLine();
             out.flush();
