@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class main {
-    private static ServerSocket server = null;
     public static void main(String[] args) {
         BAL balService = new BAL();
         ExecutorService service = Executors.newFixedThreadPool(2);
@@ -42,7 +41,7 @@ public class main {
 
     private static void startSever(int port, ExecutorService service) {
         try {
-            server = new ServerSocket(5002);
+            ServerSocket server = new ServerSocket(5002);
             System.out.println("Waiting for client....!");
             while (true){
                 Socket socket = server.accept();
