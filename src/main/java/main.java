@@ -26,9 +26,9 @@ public class main {
 //        }
         //balService.insertNewType();
         //balService.insertNewProduct();
-        balService.insertHistory();
+        //balService.insertHistory();
         //balService.insertComment();
-        //startSever(5002,service);
+        startSever(5002,service);
     }
 
     private static void tutorial() {
@@ -41,7 +41,7 @@ public class main {
 
     private static void startSever(int port, ExecutorService service) {
         try {
-            ServerSocket server = new ServerSocket(5002);
+            ServerSocket server = new ServerSocket(5003);
             System.out.println("Waiting for client....!");
             while (true){
                 Socket socket = server.accept();

@@ -268,4 +268,19 @@ public class ProductDAL extends DB implements DAL {
         }
         return productDTOS;
     }
+
+    public ArrayList<String> getAllNameProduct() {
+        ArrayList<String> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT `name` FROM `product`";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                productDTOS.add(rs.getString("name"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return productDTOS;
+    }
 }

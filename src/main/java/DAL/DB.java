@@ -19,7 +19,7 @@ public abstract class DB implements DAL{
     private Connection getConnection() {
         if(connection==null){
             try {
-                connection = DriverManager.getConnection("jdbc:mariadb://"+_HOST+"/"+_DB_NAME, "root", null);
+                connection = DriverManager.getConnection("jdbc:mariadb://"+_HOST+"/"+_DB_NAME+"?characterEncoding=UTF-8", "root", null);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 System.out.println("Ket noi database that bai!");
