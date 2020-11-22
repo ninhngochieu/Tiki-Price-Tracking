@@ -63,7 +63,7 @@ public class Server17 implements Runnable{
         HashMap<String,Object> map = new HashMap<>();
         switch (params.get("action")){
             case "getAllCategory":
-                map = new SenderDTO(this.listType,"123456",true);
+                map = new SenderDTO(this.listType,"123456",this.productBAL.getAllNameProduct());
                 return map;
             case "search":
                 int current_page = Integer.parseInt(params.get("page"));
@@ -75,12 +75,16 @@ public class Server17 implements Runnable{
                         result_list.getLast_page());
                 return map;
             case "detailProduct":
-                map = new SenderDTO(BAL.getDetailById(params),true);
+                HashMap<String,Object> data1 = new HashMap();
+                map = new SenderDTO(BAL.getDetailById(params,data1),true,
+                        Integer.parseInt(data1.get("min_price").toString()),
+                        Integer.parseInt(data1.get("max_price").toString())
+                        );
                 return map;
             case "suggest_result":
                 map = new SenderDTO(productBAL.suggestNameProduct(params),true);
                 return map;
-            case "fillter_hisory":
+            case "fillter_history":
                 HashMap<String,Object> data = new HashMap();
                 historyBAL.getHistoryByDate(params,data);//Can lay nhieu du lieu nhu min va max
                 map = new SenderDTO(data.get("history"),
@@ -108,11 +112,12 @@ public class Server17 implements Runnable{
 
     private void sendDataToClient(HashMap<String, Object> map) {
         try {
-            String s = new JSONObject(map).toString();
+/*            String s = new JSONObject(map).toString();
             String x = this.aes.encrypt(s,"123");
             System.out.println(x);
-            System.out.println(this.aes.decrypt(x,"123"));
+            System.out.println(this.aes.decrypt(x,"123"));*/
             out.write(new JSONObject(map).toString());
+            System.out.println(new JSONObject(map).toString(4));
             out.newLine();
             out.flush();
         } catch (IOException e) {

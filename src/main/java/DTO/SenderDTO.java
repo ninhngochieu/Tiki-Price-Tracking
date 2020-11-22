@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class SenderDTO extends HashMap<String,Object>{
     private Object data;
+    private Object products;
     private String key;
     private boolean status = true;
     private int min_price;
@@ -43,14 +44,16 @@ public class SenderDTO extends HashMap<String,Object>{
         this.put("max_price",max_price);
     }
 
-    public SenderDTO(Object data, String key, boolean status) {//Send data with public key//3 param
+    public SenderDTO(Object data, String key, ArrayList<String> products) {//Send data with public key//3 param
         this.data = data;
         this.key = key;
-        this.status = status;
+        //this.status = status;
+        this.products = products;
 
+        this.put("name",products);
         this.put("data",data);
         this.put("key",key);
-        this.put("status",status);
+        //this.put("status",status);
 
     }
 

@@ -118,4 +118,8 @@ public class ProductBAL{
         if(list.isEmpty()) list = productDAL.suggestAllProductByName(key);
         return list;
     }
+
+    public ArrayList<String> getAllNameProduct() {
+        return this.productDAL.getAllNameProduct();
+    }
 }

@@ -72,9 +72,11 @@ public class BAL {
         }
     }
 
-    public Object getDetailById(HashMap<String, String> params) {
+    public Object getDetailById(HashMap<String, String> params, HashMap<String, Object> data1) {
         ArrayList<Object> historyDTOS = historyBAL.getHistoryById(params.get("id"));
         ArrayList<Object> commentDTOS = commentBAL.getCommentById(params.get("id"));
+        data1.put("max_price",historyBAL.maxPrice(params.get("id")));
+        data1.put("min_price",historyBAL.minPrice(params.get("id")));
         return detailBAL.getDetailProduct(params.get("id"),historyDTOS,commentDTOS);
     }
 }

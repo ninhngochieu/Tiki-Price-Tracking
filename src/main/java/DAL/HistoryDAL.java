@@ -69,7 +69,8 @@ public class HistoryDAL extends DB implements DAL{
     public ArrayList<HistoryDTO> getALlHistoryByDate(String id, String start, String end) {
         ArrayList<HistoryDTO> historyDTOS = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM `history` WHERE `id_product` = '"+id+"' AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+//            String sql = "SELECT * FROM `history` WHERE `id_product` = '"+id+"' AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            String sql = "SELECT * FROM `history` WHERE `id_product` = '"+id+"' AND `last_update` >= '"+start+"'  AND `last_update`<= DATE('"+end+"')+1";
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()){
@@ -90,7 +91,8 @@ public class HistoryDAL extends DB implements DAL{
 
     public int getMaxHistoryByDate(String id, String start, String end) {
         try {
-            String sql="SELECT MAX(`current_price`) FROM `history` WHERE `id_product` = "+id+" AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            //String sql="SELECT MAX(`current_price`) FROM `history` WHERE `id_product` = "+id+" AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            String sql="SELECT MAX(`current_price`) FROM `history` WHERE `id_product` = "+id+"  AND `last_update` >= '"+start+"'  AND `last_update`<= DATE('"+end+"')+1";
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             if(rs.next()){
@@ -104,7 +106,36 @@ public class HistoryDAL extends DB implements DAL{
 
     public int getMinHistoryByDate(String id, String start, String end) {
         try {
-            String sql="SELECT MIN(`current_price`) FROM `history` WHERE `id_product` = "+id+" AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            //String sql="SELECT MIN(`current_price`) FROM `history` WHERE `id_product` = "+id+" AND (DATE(`last_update`) BETWEEN DATE('"+start+"') AND DATE('"+end+"'))";
+            String sql="SELECT MIN(`current_price`) FROM `history` WHERE `id_product` = "+id+"  AND `last_update` >= '"+start+"'  AND `last_update`<= DATE('"+end+"')+1";
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+    public Object maxPrice(String id) {
+        try {
+            String sql="SELECT MAX(`current_price`) FROM `history` WHERE `id_product` ="+id;
+            Statement statement = this.connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
+    public Object minPrice(String id) {
+        try {
+            String sql="SELECT MIN(`current_price`) FROM `history` WHERE `id_product` ="+id;
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             if(rs.next()){
