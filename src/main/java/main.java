@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 public class main {
     public static void main(String[] args) {
         BAL balService = new BAL();
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        ExecutorService service = Executors.newFixedThreadPool(2);//Tạo 2 pool chứa các luồng
 //        switch (args[0]){
 //            case "1":balService.insertNewType();
 //                break;
@@ -24,11 +24,11 @@ public class main {
 //            default: tutorial();
 //                break;
 //        }
-        //balService.insertNewType();
-        //balService.insertNewProduct();
-        balService.insertHistory();
-        //balService.insertComment();
-        //startSever(5003,service);
+        //balService.insertNewType();//Thêm loai mới
+        //balService.insertNewProduct();//Thêm sản phâm mới
+        balService.insertHistory();//Thêm lịch sử giá mới
+        //balService.insertComment();//Thêm comment mới
+        //startSever(5003,service);//Chạy server
     }
 
     private static void tutorial() {
@@ -41,12 +41,12 @@ public class main {
 
     private static void startSever(int port, ExecutorService service) {
         try {
-            ServerSocket server = new ServerSocket(port);
+            ServerSocket server = new ServerSocket(port);//Tạo sv với port = 5003
             System.out.println("Waiting for client....!");
             while (true){
                 Socket socket = server.accept();
                 System.out.println(socket.toString()+" connected!");
-                service.execute(new Server17(socket));
+                service.execute(new Server17(socket));//Nếu có cl kết nối thì tạo 1 luồng chạy sv
             }
         } catch (IOException e) {
             e.printStackTrace();
