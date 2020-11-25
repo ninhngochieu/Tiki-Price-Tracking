@@ -46,16 +46,15 @@ public class ProductBAL{
         if(idCategory.equalsIgnoreCase("1")){
             ArrayList<ProductDTO> fillter_price= new ArrayList(instance.result_list.get(key));
             fillterPrice(fillter_price,params);
-//            return new PaginateList(instance.result_list.get(key),per_page,current_page).getResult();//tra ve ket qua phan trang
             return new PaginateList(fillter_price,per_page,current_page).getResult();//tra ve ket qua phan trang
         }else {
             ArrayList temp_list = new ArrayList(instance.result_list.get(key).stream().filter(x->{
                 return x.getId_item().equalsIgnoreCase(idCategory);
             }).collect(Collectors.toList())); //List tam da loc theo id theo ket qua tren
-
+            System.out.println(temp_list.toString());
             ArrayList<ProductDTO> fillter_price= new ArrayList(temp_list);
             fillterPrice(fillter_price,params);
-            return new PaginateList(temp_list,per_page,current_page).getResult();
+            return new PaginateList(fillter_price,per_page,current_page).getResult();
         }
     }
 

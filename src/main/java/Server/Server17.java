@@ -8,10 +8,12 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Server17 implements Runnable{
     private Socket socket;
@@ -23,6 +25,7 @@ public class Server17 implements Runnable{
     private HistoryBAL historyBAL;
     private BAL BAL;
     private AES aes;
+    private String key;
     private static ArrayListInstance listInstance=ArrayListInstance.getInstance();
 
     public Server17(Socket socket) {
@@ -39,6 +42,7 @@ public class Server17 implements Runnable{
             e.printStackTrace();
         }
         this.aes = new AES();
+        this.key = givenUsingPlainJava_whenGeneratingRandomStringUnbounded_thenCorrect();
     }
 
     @Override
@@ -47,11 +51,20 @@ public class Server17 implements Runnable{
             String data="";
             while (true){
                 data = this.in.readLine();
-                HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
-                HashMap<String,Object> map = processingData(params);
-                System.out.println(params+map.toString());
-                sendDataToClient(map);
-
+                System.out.println(data);
+                if(!data.equalsIgnoreCase("action=getAllCategory&")){
+                    data = this.aes.decrypt(data,key);
+                    System.out.println(data);
+                    HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
+                    HashMap<String,Object> map = processingData(params);
+                    System.out.println(params);
+                    sendDataToClient(map);
+                }else {
+                    HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
+                    HashMap<String,Object> map = processingData(params);
+                    System.out.println(params);
+                    sendDataToClientWithoutEnc(map);
+                }
             }
         }catch (Exception e){
 
@@ -63,7 +76,7 @@ public class Server17 implements Runnable{
         HashMap<String,Object> map = new HashMap<>();
         switch (params.get("action")){
             case "getAllCategory":
-                map = new SenderDTO(this.listType,"123456",this.productBAL.getAllNameProduct());
+                map = new SenderDTO(this.listType,key,this.productBAL.getAllNameProduct());
                 return map;
             case "search":
                 int current_page = Integer.parseInt(params.get("page"));
@@ -112,14 +125,24 @@ public class Server17 implements Runnable{
 
     private void sendDataToClient(HashMap<String, Object> map) {
         try {
-/*            String s = new JSONObject(map).toString();
-            String x = this.aes.encrypt(s,"123");
-            System.out.println(x);
-            System.out.println(this.aes.decrypt(x,"123"));*/
-            out.write(new JSONObject(map).toString());
-            System.out.println(new JSONObject(map).toString(4));
+            out.write(this.aes.encrypt(new JSONObject(map).toString(),key));
+            //System.out.println(new JSONObject(map).toString(4));
             out.newLine();
             out.flush();
+            System.out.println(key);
+        } catch (IOException e) {
+            e.printStackTrace();
+            closeConnection();
+        }
+
+    }
+    private void sendDataToClientWithoutEnc(HashMap<String, Object> map) {
+        try {
+            out.write(new JSONObject(map).toString());
+            //System.out.println(new JSONObject(map).toString(4));
+            out.newLine();
+            out.flush();
+            System.out.println(key);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,5 +158,19 @@ public class Server17 implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private String givenUsingPlainJava_whenGeneratingRandomStringUnbounded_thenCorrect() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        StringBuilder buffer = new StringBuilder(targetStringLength);
+        for (int i = 0; i < targetStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int)
+                    (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        String generatedString = buffer.toString();
+        return generatedString;
     }
 }
