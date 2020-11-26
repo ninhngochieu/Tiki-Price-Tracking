@@ -1,5 +1,8 @@
 package DTO;
 
+import java.sql.Timestamp;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CommentDTO{
@@ -46,8 +49,9 @@ public class CommentDTO{
     }
 
     public String getPurchased_at() {
-        Date pa = new Date(purchased_at);
-        return pa.getDay()+"-"+pa.getMonth()+"-"+pa.getYear();
+     Date date = new Date(purchased_at*1000);
+     Format format = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
+     return format.format(date);
     }
 
     public void setPurchased_at(int purchased_at) {

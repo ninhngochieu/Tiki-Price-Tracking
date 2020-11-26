@@ -102,11 +102,10 @@ public class ProductDAL extends DB implements DAL {
                 );
                 productDTOS.add(product);
             }
-            return productDTOS;
-        } catch (SQLException throwables) {
+         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return productDTOS;
     }
 
     public ArrayList<Object> getByName(String name, int per_page, int current_page) {
@@ -128,11 +127,10 @@ public class ProductDAL extends DB implements DAL {
                 );
                 productDTOS.add(product);
             }
-            return productDTOS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return productDTOS;
     }
 
     public ArrayList<Object> getByIdName(String id_item, String name, int per_page, int current_page) {
@@ -154,11 +152,10 @@ public class ProductDAL extends DB implements DAL {
                 );
                 productDTOS.add(product);
             }
-            return productDTOS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return productDTOS;
     }
 
     public ArrayList<Object> getTotalByName(String name) {
@@ -180,11 +177,10 @@ public class ProductDAL extends DB implements DAL {
                 );
                 productDTOS.add(product);
             }
-            return productDTOS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return productDTOS;
     }
 
     public ArrayList<ProductDTO> getByName(String name) {
@@ -206,11 +202,35 @@ public class ProductDAL extends DB implements DAL {
                 );
                 productDTOS.add(product);
             }
-            return productDTOS;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return productDTOS;
+    }
+    public ArrayList<ProductDTO> getByNameTest(String name) {
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM `product` WHERE MATCH (`name`) AGAINST ('?' IN NATURAL LANGUAGE MODE)";
+            PreparedStatement statement = this.connection.prepareStatement(sql);
+            statement.setString(1,name);
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()){
+                ProductDTO product = new ProductDTO(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("image"),
+                        rs.getString("id_item"),
+                        rs.getInt("price"),
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(rs.getString("star"))
+                );
+                productDTOS.add(product);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return productDTOS;
     }
 
     public ArrayList<ProductDTO> getByAllName(String name) {
@@ -276,7 +296,13 @@ public class ProductDAL extends DB implements DAL {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()){
-                productDTOS.add(rs.getString("name"));
+                String s = rs.getString("name");
+                String chuan_hoa = s.replace("- Hàng Nhập Khẩu","");
+                chuan_hoa = chuan_hoa.replace("- Hàng Chính Hãng","");
+                chuan_hoa = chuan_hoa.replace("- Hàng chính hãng","");
+                chuan_hoa = chuan_hoa.replace("- Màu Ngẫu Nhiên","");
+                chuan_hoa = chuan_hoa.replace("- Màu Đen","");
+                productDTOS.add(chuan_hoa);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -170,7 +170,6 @@ public class Server17 implements Runnable{
                     (random.nextFloat() * (rightLimit - leftLimit + 1));
             buffer.append((char) randomLimitedInt);
         }
-        String generatedString = buffer.toString();
-        return generatedString;
-    }
+        return buffer.toString();
+        }
 }
