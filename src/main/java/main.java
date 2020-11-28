@@ -26,9 +26,9 @@ public class main {
 //        }
         //balService.insertNewType();//Thêm loai mới
         //balService.insertNewProduct();//Thêm sản phâm mới
-        balService.insertHistory();//Thêm lịch sử giá mới
+        //balService.insertHistory();//Thêm lịch sử giá mới
         //balService.insertComment();//Thêm comment mới
-        //startSever(5003,service);//Chạy server
+        startSever(5003,service);//Chạy server
     }
 
     private static void tutorial() {

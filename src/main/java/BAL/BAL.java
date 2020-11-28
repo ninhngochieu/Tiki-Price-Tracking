@@ -7,6 +7,7 @@ import Server.ArrayListInstance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.*;
 
 public class BAL {
     TypeBAL typeBAL = new TypeBAL();
@@ -73,10 +74,52 @@ public class BAL {
     }
 
     public Object getDetailById(HashMap<String, String> params, HashMap<String, Object> data1) {
-        ArrayList<Object> historyDTOS = historyBAL.getHistoryById(params.get("id"));
-        ArrayList<Object> commentDTOS = commentBAL.getCommentById(params.get("id"));
-        data1.put("max_price",historyBAL.maxPrice(params.get("id")));
-        data1.put("min_price",historyBAL.minPrice(params.get("id")));
-        return detailBAL.getDetailProduct(params.get("id"),historyDTOS,commentDTOS);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        try {
+            ArrayList<Object> getHistoryAsync = executor.submit(new Callable<ArrayList<Object>>() {
+                @Override
+                public ArrayList<Object> call() throws Exception {
+                    System.out.println("Get history");
+                    return historyBAL.getHistoryById(params.get("id"));
+                }
+            }).get();
+            ArrayList<Object> getCommentAsync = executor.submit(new Callable<ArrayList<Object>>() {
+                @Override
+                public ArrayList<Object> call() throws Exception {
+                    System.out.println("Get comment");
+                    return historyBAL.getHistoryById(params.get("id"));
+                }
+            }).get();
+            Object maxPrice = executor.submit(new Callable<Object>() {
+                @Override
+                public Object call() throws Exception {
+                    System.out.println("Get max");
+                    return historyBAL.maxPrice(params.get("id"));
+                }
+            });
+            Object minPrice = executor.submit(new Callable<Object>() {
+                @Override
+                public Object call() throws Exception {
+                    System.out.println("Get min");
+                    return historyBAL.maxPrice(params.get("id"));
+                }
+            });
+
+            data1.put("max_price",maxPrice);
+            data1.put("min_price",minPrice);
+            executor.shutdown();
+            while (!executor.isTerminated()){}
+            return detailBAL.getDetailProduct(params.get("id"),getHistoryAsync,getCommentAsync);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+//        ArrayList<Object> historyDTOS = historyBAL.getHistoryById(params.get("id"));
+//        ArrayList<Object> commentDTOS = commentBAL.getCommentById(params.get("id"));
+//        data1.put("max_price",historyBAL.maxPrice(params.get("id")));
+//        data1.put("min_price",historyBAL.minPrice(params.get("id")));
+//        return detailBAL.getDetailProduct(params.get("id"),historyDTOS,commentDTOS);
+        return new Object();
     }
 }
