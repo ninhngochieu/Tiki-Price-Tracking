@@ -49,21 +49,40 @@ public class Server17 implements Runnable{
     public void run() {
         try{
             String data="";
+            boolean HasNotKey = true;
             while (true){
                 data = this.in.readLine();
-                System.out.println(data);
-                if(!data.equalsIgnoreCase("action=getAllCategory&")){
+                if(HasNotKey){
+                    String publickey = data.split("&")[1].split("=")[1];
+                    String encKey = RSA.RSAEnc(publickey,key);
+                    System.out.println(publickey);
+                    System.out.println("+++++++++++++++++++++++++++++++");
+                    System.out.println(encKey);
+                    System.out.println("Dữ liệu chưa mã hoá");
+                    sendDataToClientWithoutEnc(encKey);
+                    HasNotKey = false;
+                    System.out.println("1");
+                }else {
+                    /*if(!data.equalsIgnoreCase("action=getAllCategory&")){
+                        data = this.aes.decrypt(data,key);
+                        System.out.println(data);
+                        HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
+                        HashMap<String,Object> map = processingData(params);
+                        System.out.println(params);
+                        sendDataToClient(map);
+                    }else {
+                        HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
+                        HashMap<String,Object> map = processingData(params);
+                        System.out.println(params);
+                        sendDataToClientWithoutEnc(map);
+                    }*/
+                    System.out.println("2");
                     data = this.aes.decrypt(data,key);
                     System.out.println(data);
                     HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
                     HashMap<String,Object> map = processingData(params);
                     System.out.println(params);
                     sendDataToClient(map);
-                }else {
-                    HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
-                    HashMap<String,Object> map = processingData(params);
-                    System.out.println(params);
-                    sendDataToClientWithoutEnc(map);
                 }
             }
         }catch (Exception e){
@@ -125,6 +144,7 @@ public class Server17 implements Runnable{
 
     private void sendDataToClient(HashMap<String, Object> map) {
         try {
+            //System.out.println(new JSONObject(map).toString(4));
             out.write(this.aes.encrypt(new JSONObject(map).toString(),key));
             //System.out.println(new JSONObject(map).toString(4));
             out.newLine();
@@ -136,9 +156,10 @@ public class Server17 implements Runnable{
         }
 
     }
-    private void sendDataToClientWithoutEnc(HashMap<String, Object> map) {
+    private void sendDataToClientWithoutEnc(/*HashMap<String, Object> map*/String enc) {
         try {
-            out.write(new JSONObject(map).toString());
+            //out.write(new JSONObject(map).toString());
+            out.write(enc);
             //System.out.println(new JSONObject(map).toString(4));
             out.newLine();
             out.flush();

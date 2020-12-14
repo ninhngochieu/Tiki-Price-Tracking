@@ -2,6 +2,7 @@ package DAL;
 
 import DTO.DetailDTO;
 import DTO.ProductDTO;
+import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +48,9 @@ public class DetailDAL extends DB {
                         rs.getString("image"),
                         rs.getString("id_item"),
                         rs.getInt("price"),
+                        rs.getInt("review_count"),
+                        rs.getFloat("rating_average"),
+                        new JSONObject(),
                         historyDTOS,
                         commentDTOS
                 );

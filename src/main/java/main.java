@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 public class main {
     public static void main(String[] args) {
         BAL balService = new BAL();
-        ExecutorService service = Executors.newFixedThreadPool(2);//Tạo 2 pool chứa các luồng
+        ExecutorService service = Executors.newFixedThreadPool(4);//Tạo 2 pool chứa các luồng
 //        switch (args[0]){
 //            case "1":balService.insertNewType();
 //                break;

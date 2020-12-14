@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductDAL extends DB implements DAL {
 
@@ -180,6 +182,7 @@ public class ProductDAL extends DB implements DAL {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        System.out.println(productDTOS.toString());
         return productDTOS;
     }
 

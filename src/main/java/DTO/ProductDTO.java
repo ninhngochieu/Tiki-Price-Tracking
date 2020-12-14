@@ -62,14 +62,14 @@ public class ProductDTO implements Comparable{
         this.review_count = review_count;
     }
 
-    public ProductDTO(String id, String name, String image, String id_item, int price, int review_count) {
+    /*public ProductDTO(String id, String name, String image, String id_item, int price, int review_count) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.id_item = id_item;
         this.price = price;
         this.review_count = review_count;
-    }
+    }*/
 
     public ProductDTO(String id, String name, String image, String id_item, int price) {
         this.id = id;
