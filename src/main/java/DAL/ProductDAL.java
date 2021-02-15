@@ -206,7 +206,7 @@ public class ProductDAL extends DB implements DAL {
                 productDTOS.add(product);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
         }
         return productDTOS;
     }
@@ -231,7 +231,7 @@ public class ProductDAL extends DB implements DAL {
                 productDTOS.add(product);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
         }
         return productDTOS;
     }
@@ -257,7 +257,7 @@ public class ProductDAL extends DB implements DAL {
             }
             return productDTOS;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
         }
         return productDTOS;
     }
@@ -272,7 +272,7 @@ public class ProductDAL extends DB implements DAL {
                 productDTOS.add(rs.getString("name"));
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
         }
         return productDTOS;
     }
@@ -287,7 +287,7 @@ public class ProductDAL extends DB implements DAL {
                 productDTOS.add(rs.getString("name"));
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
         }
         return productDTOS;
     }
@@ -308,7 +308,7 @@ public class ProductDAL extends DB implements DAL {
                 productDTOS.add(chuan_hoa);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
         }
         return productDTOS;
     }

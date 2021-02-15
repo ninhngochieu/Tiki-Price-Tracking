@@ -49,39 +49,19 @@ public class Server17 implements Runnable{
     public void run() {
         try{
             String data="";
-            boolean HasNotKey = true;
+            boolean HasNotPublicKey = true;
             while (true){
                 data = this.in.readLine();
-                if(HasNotKey){
-                    String publickey = data.split("&")[1].split("=")[1];
-                    String encKey = RSA.RSAEnc(publickey,key);
-                    System.out.println(publickey);
-                    System.out.println("+++++++++++++++++++++++++++++++");
-                    System.out.println(encKey);
-                    System.out.println("Dữ liệu chưa mã hoá");
-                    sendDataToClientWithoutEnc(encKey);
-                    HasNotKey = false;
-                    System.out.println("1");
+                if(HasNotPublicKey){
+                    String publickey = getPublicKeyFromClient(data);
+                    String encryptKey = RSA.RSAEnc(publickey,key);
+                    sendDataToClientWithoutEnc(encryptKey);
+                    HasNotPublicKey = false;
                 }else {
-                    /*if(!data.equalsIgnoreCase("action=getAllCategory&")){
-                        data = this.aes.decrypt(data,key);
-                        System.out.println(data);
-                        HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
-                        HashMap<String,Object> map = processingData(params);
-                        System.out.println(params);
-                        sendDataToClient(map);
-                    }else {
-                        HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
-                        HashMap<String,Object> map = processingData(params);
-                        System.out.println(params);
-                        sendDataToClientWithoutEnc(map);
-                    }*/
-                    System.out.println("2");
+                    //System.out.println(data);
                     data = this.aes.decrypt(data,key);
-                    System.out.println(data);
                     HashMap<String,String> params = processingParameter(data.split("&"));//String parameter: action=search&name="San pham 1"
                     HashMap<String,Object> map = processingData(params);
-                    System.out.println(params);
                     sendDataToClient(map);
                 }
             }
@@ -89,6 +69,14 @@ public class Server17 implements Runnable{
 
         }
         closeConnection();
+    }
+
+    private String getPublicKeyFromClient(String data) {
+        try {
+            return data.split("&")[1].split("=")[1];
+        }catch (Exception e){
+            return null;
+        }
     }
 
     private HashMap processingData(HashMap<String, String> params) {
@@ -144,9 +132,7 @@ public class Server17 implements Runnable{
 
     private void sendDataToClient(HashMap<String, Object> map) {
         try {
-            //System.out.println(new JSONObject(map).toString(4));
             out.write(this.aes.encrypt(new JSONObject(map).toString(),key));
-            //System.out.println(new JSONObject(map).toString(4));
             out.newLine();
             out.flush();
             System.out.println(key);
@@ -158,9 +144,8 @@ public class Server17 implements Runnable{
     }
     private void sendDataToClientWithoutEnc(/*HashMap<String, Object> map*/String enc) {
         try {
-            //out.write(new JSONObject(map).toString());
+            System.out.println("Gửi chuỗi mã hoá key DES");
             out.write(enc);
-            //System.out.println(new JSONObject(map).toString(4));
             out.newLine();
             out.flush();
             System.out.println(key);
